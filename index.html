@@ -83,7 +83,8 @@ b { font-weight: 900; }
     <li>"Bilinmeyen uygulamalar" izni sorulursa <b>Ayarlar</b>'a girip izin verin, sonra geri dönün.<span class="small">Honor'da: Ayarlar → Güvenlik → Daha fazla ayar → Bilinmeyen kaynaklardan uygulama yükle</span></li>
     <li><b>Yükle</b>'ye dokunun. Play Koruma sorarsa <b>Yine de yükle</b>.</li>
   </ol>
-  <p class="foot">Yeni sürüm eskisinin üstüne kurulur; yıldızlar ve programlar kaybolmaz. Kurulduktan sonra internet gerekmez.</p>
+  <p class="foot">Yeni sürüm eskisinin üstüne kurulur; yıldızlar ve programlar kaybolmaz. Kurulduktan sonra internet gerekmez.
+    <span class="small">1.4 ve sonrası kuruluysa yeni sürümü uygulamanın içinden de alabilirsiniz: Ayarlar → Güncelleme → Güncelle.</span></p>
 </main>
 <script>
 (function () {
@@ -92,15 +93,14 @@ b { font-weight: 900; }
   document.getElementById('dl').addEventListener('click', function () {
     document.getElementById('status').textContent = 'İndirme başladı. Bitince Aç\'a dokunun.';
   });
-  // son sürümün numarası, boyutu ve tarihi (GitHub'a ulaşılamazsa sayfa yine çalışır)
-  fetch('https://api.github.com/repos/MustafaTANIRLI/code-car-indir/releases/latest')
+  // son sürümün numarası, boyutu ve tarihi: version.json (tools/publish_apk.py yazar; uygulama da buna bakar)
+  fetch('version.json', { cache: 'no-store' })
     .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (rel) {
-      if (!rel || !rel.tag_name) return;
-      var apk = (rel.assets || []).filter(function (a) { return /\.apk$/i.test(a.name); })[0];
-      var parts = ['Android uygulaması', 'Sürüm ' + rel.tag_name.replace(/^v/, '')];
-      if (apk) parts.push((apk.size / 1048576).toFixed(1).replace('.', ',') + ' MB');
-      if (rel.published_at) parts.push(new Date(rel.published_at).toLocaleDateString('tr-TR'));
+    .then(function (v) {
+      if (!v || !v.versionName) return;
+      var parts = ['Android uygulaması', 'Sürüm ' + v.versionName];
+      if (v.size) parts.push((v.size / 1048576).toFixed(1).replace('.', ',') + ' MB');
+      if (v.date) parts.push(new Date(v.date + 'T12:00:00').toLocaleDateString('tr-TR'));
       document.getElementById('meta').textContent = parts.join(' · ');
     })
     .catch(function () {});
