@@ -400,7 +400,7 @@ button { font: inherit; cursor: pointer; -webkit-appearance: none; appearance: n
 .logo-tag { display: inline-block; margin-top: 16px; font-size: 28px; font-weight: 900; color: #2d6e2a; background: rgba(255, 255, 255, .88); padding: 6px 26px; border-radius: 22px; }
 .title-buttons { position: absolute; left: 50%; top: 66.5%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 24px; }
 .title-row { display: flex; gap: 22px; }
-.title-mascot { position: absolute; left: 18px; bottom: 14px; display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 6px; pointer-events: none; }
+.title-mascot { position: absolute; left: 18px; bottom: 14px; display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 6px; }
 .mascot.big { width: 190px; height: 162px; }
 .speech {
   position: relative; background: #fff; padding: 10px 18px; border-radius: 22px; font-size: 20px; font-weight: 900;
@@ -641,7 +641,7 @@ button { font: inherit; cursor: pointer; -webkit-appearance: none; appearance: n
         <span class="set-right"><span id="upd-status" class="upd-status"></span><button id="btn-update" class="btn btn-blue btn-small"></button></span>
       </div>
       <button class="btn btn-go set-close" data-i18n="common.ok"></button>
-      <div class="set-version">Code Car · demo 1.4</div>
+      <div class="set-version">Code Car · demo 1.5</div>
     </div>
   </div>
 
@@ -734,17 +734,34 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
   CC.Save = {
     data: null,
     defaults() {
-      return { v: 1, stars: {}, drafts: {}, car: 'racer', sfx: true, music: true, lang: 'tr', unlockAll: false, seen: {}, carsSeen: 0 };
+      return { v: 2, stars: {}, drafts: {}, car: 'racer', sfx: true, music: true, lang: 'tr', unlockAll: false, seen: {}, carsSeen: 0 };
     },
     load() {
       let d = null;
       try { d = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { d = null; }
+      const old = d && typeof d === 'object' ? (+d.v || 1) : 2;
       this.data = Object.assign(this.defaults(), d && typeof d === 'object' ? d : {});
       // bozuk kayıtta yıldız ve program tabloları nesne değilse oyun açılmaz: sıfırdan başlat
       const table = v => !!v && typeof v === 'object' && !Array.isArray(v);
       if (!table(this.data.stars)) this.data.stars = {};
       if (!table(this.data.drafts)) this.data.drafts = {};
+      if (old < 2) this.migrate();
       return this.data;
+    },
+    /* 1.5'te Işıklı Şehir 3., Karlı Tepeler 4. dünya oldu: eski kayıtlardaki 3-x ve 4-x yıldızları ve programları yer değiştirir */
+    migrate() {
+      const d = this.data;
+      [d.stars, d.drafts].forEach(t => {
+        for (let n = 1; n <= 6; n++) {
+          const a = '3-' + n, b = '4-' + n, va = t[a], vb = t[b];
+          delete t[a];
+          delete t[b];
+          if (vb !== undefined) t[a] = vb;
+          if (va !== undefined) t[b] = va;
+        }
+      });
+      d.v = 2;
+      this.save();
     },
     save() {
       try { localStorage.setItem(KEY, JSON.stringify(this.data)); } catch (e) { /* özel pencere: sessizce geç */ }
@@ -759,6 +776,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
     starsOf(id) { return this.data.stars[id] || 0; },
     isUnlocked(index) {
       if (this.data.unlockAll || index === 0) return true;
+      // yıldız alınmış bölüm hep açık kalır (dünya sırası değişmeden önce bitirilenler kilitlenmesin)
+      if (this.starsOf(CC.LEVELS[index].id) > 0) return true;
       return this.starsOf(CC.LEVELS[index - 1].id) > 0;
     },
   };
@@ -775,7 +794,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
     tr: {
       'title.play': 'OYNA', 'title.garage': 'GARAJ', 'title.settings': 'AYARLAR',
       'title.tagline': 'Kodla • Sür • Kazan!',
-      'title.hello': 'Merhaba, ben Bip!',
+      'title.hello': 'Merhaba, ben Bip!', 'title.reset': 'Oyun sıfırlandı.',
       'levels.title': 'Bölüm Seç', 'levels.locked': 'Önce önceki bölümü bitir!',
       'garage.title': 'Garaj', 'garage.select': 'Seç', 'garage.selected': 'Seçili',
       'garage.locked': 'Bu araba için {n} yıldız topla!', 'garage.unlocked': 'Yeni araba açıldı: {car}!',
@@ -846,7 +865,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
     en: {
       'title.play': 'PLAY', 'title.garage': 'GARAGE', 'title.settings': 'SETTINGS',
       'title.tagline': 'Code • Drive • Win!',
-      'title.hello': 'Hi, I am Bip!',
+      'title.hello': 'Hi, I am Bip!', 'title.reset': 'The game has been reset.',
       'levels.title': 'Choose a Level', 'levels.locked': 'Finish the previous level first!',
       'garage.title': 'Garage', 'garage.select': 'Choose', 'garage.selected': 'Chosen',
       'garage.locked': 'Collect {n} stars for this car!', 'garage.unlocked': 'New car unlocked: {car}!',
@@ -1658,122 +1677,13 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       ],
     },
     {
-      id: 3, theme: 'snow', color: '#3FA7D6',
-      name: { tr: 'Karlı Tepeler', en: 'Snowy Hills' },
-      concept: { tr: 'Döngüler', en: 'Loops' },
-      palette: P1.concat(['key', 'loop']),
-      levels: [
-        {
-          id: '3-1', tutorial: 'loop',
-          name: { tr: 'Tekrarla!', en: 'Repeat!' },
-          palette: P1.concat(['loop']),
-          map: [
-            '..........',
-            '..........',
-            '.S###c###F',
-            '..........',
-            '..........',
-          ],
-          dir: 'right', maxBlocks: 4, par: 3, solution: 'S 8(R)',
-          intro: {
-            tr: 'Sekiz tane {right} koymaya yer yok! {loop} Tekrarla bloğunu ekle, içine {right} koy ve sayıyı 8 yap.',
-            en: 'No room for eight {right} blocks! Add a {loop} Repeat block, put {right} inside and set it to 8.',
-          },
-        },
-        {
-          id: '3-2',
-          name: { tr: 'Merdiven', en: 'Staircase' },
-          palette: P1.concat(['loop']),
-          map: [
-            '..........',
-            '.......F..',
-            '......#c..',
-            '.....c#...',
-            '....##....',
-            '...S#.....',
-          ],
-          dir: 'right', maxBlocks: 6, par: 4, solution: 'S 4(R U)',
-          intro: {
-            tr: 'Merdiven gibi bir yol! Hangi iki blok tekrar ediyor? İkisini birlikte {loop} içine koy.',
-            en: 'A road like a staircase! Which two blocks repeat? Put both inside a {loop}.',
-          },
-        },
-        {
-          id: '3-3',
-          name: { tr: 'İki Döngü', en: 'Two Loops' },
-          map: [
-            '..........',
-            '.S#c###c#.',
-            '........#.',
-            '........#.',
-            '........F.',
-            '..........',
-          ],
-          dir: 'right', maxBlocks: 7, par: 5, solution: 'S 7(R) 3(D)',
-          intro: {
-            tr: 'Birden fazla {loop} kullanabilirsin: biri sağa, biri aşağı!',
-            en: 'You can use more than one {loop}: one for right, one for down!',
-          },
-        },
-        {
-          id: '3-4',
-          name: { tr: 'Zikzak', en: 'Zigzag' },
-          map: [
-            '..........',
-            '..........',
-            '.#c#.#c#..',
-            '.S.###.##F',
-            '..........',
-          ],
-          dir: 'up', maxBlocks: 10, par: 8, solution: 'S 2(U R R D R R)',
-          intro: {
-            tr: 'Yol bir desenle tekrar ediyor. Deseni bul ve {loop} içine koy!',
-            en: 'The road repeats a pattern. Find it and put it inside a {loop}!',
-          },
-        },
-        {
-          id: '3-5',
-          name: { tr: 'Anahtar Döngüsü', en: 'Key Loop' },
-          map: [
-            '..........',
-            '..k.k.k...',
-            '.S#G#G#G#F',
-            '..........',
-            '..........',
-          ],
-          dir: 'right', maxBlocks: 11, par: 9, solution: 'S 3(R U D K R) R R',
-          intro: {
-            tr: 'Üç anahtar, üç bariyer. Tekrar eden parçayı bulabilir misin? {key} bloğu da döngüye girebilir.',
-            en: 'Three keys, three barriers. Can you find the repeating part? The {key} block can go inside a loop too.',
-          },
-        },
-        {
-          id: '3-6',
-          name: { tr: 'Karlı Dağ', en: 'Snowy Mountain' },
-          map: [
-            '..........',
-            '....c##...',
-            '...##.#c..',
-            '..##...##.',
-            '.S#.....F.',
-            '..........',
-          ],
-          dir: 'right', maxBlocks: 10, par: 8, solution: 'S 3(R U) R 3(R D)',
-          intro: {
-            tr: 'Dağın bir yanı yukarı, öbür yanı aşağı iniyor. İki ayrı döngü dene!',
-            en: 'One side of the mountain goes up, the other goes down. Try two different loops!',
-          },
-        },
-      ],
-    },
-    {
-      id: 4, theme: 'city', color: '#7B61FF',
+      id: 3, theme: 'city', color: '#7B61FF',
       name: { tr: 'Işıklı Şehir', en: 'City of Lights' },
       concept: { tr: 'Koşullar', en: 'Conditions' },
-      palette: ALL,
+      palette: P1.concat(['key', 'wait']),
       levels: [
         {
-          id: '4-1', tutorial: 'wait',
+          id: '3-1', tutorial: 'wait',
           name: { tr: 'Kırmızı Işık', en: 'Red Light' },
           palette: P1.concat(['wait']),
           map: [
@@ -1791,7 +1701,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
           },
         },
         {
-          id: '4-2',
+          id: '3-2',
           name: { tr: 'Yeşil mi, Kırmızı mı?', en: 'Green or Red?' },
           map: [
             '.........',
@@ -1801,14 +1711,14 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
             '.........',
           ],
           lights: ['green', 'red'],
-          dir: 'right', maxBlocks: 14, par: 9, solution: 'S 4(R) D D L W 3(L)',
+          dir: 'right', maxBlocks: 14, par: 12, solution: 'S R R R R D D L W L L L',
           intro: {
             tr: 'Işık yeşilse durmadan geç, kırmızıysa {wait} ile bekle. Gereksiz beklersen blok harcarsın!',
             en: 'If the light is green, just drive on. If it is red, {wait}. Waiting for nothing costs a block!',
           },
         },
         {
-          id: '4-3',
+          id: '3-3',
           name: { tr: 'Işık Dizisi', en: 'Light Parade' },
           map: [
             '..........',
@@ -1818,14 +1728,14 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
             '..........',
           ],
           lights: ['red', 'green', 'red'],
-          dir: 'right', maxBlocks: 8, par: 6, solution: 'S 3(W R R R)',
+          dir: 'right', maxBlocks: 14, par: 12, solution: 'S W R R R R R R W R R R',
           intro: {
-            tr: '{wait} bloğu döngünün içinde de çalışır. Yeşil ışıkta beklemek zarar vermez, araba hemen devam eder.',
-            en: 'The {wait} block works inside a loop too. Waiting at a green light is harmless; the car just goes on.',
+            tr: 'Üç ışık yan yana: kırmızı, yeşil, kırmızı. {wait} bloğunu yalnızca kırmızı ışıkların önünde kullan; yeşilde beklemek blok harcar!',
+            en: 'Three lights in a row: red, green, red. Use {wait} only in front of the red ones; waiting at green wastes a block!',
           },
         },
         {
-          id: '4-4',
+          id: '3-4',
           name: { tr: 'Şehirde Anahtar', en: 'City Key' },
           map: [
             '.........',
@@ -1835,14 +1745,14 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
             '.........',
           ],
           lights: ['red'],
-          dir: 'right', maxBlocks: 16, par: 13, solution: 'S R R W 3(R) D D L L K 3(L)',
+          dir: 'right', maxBlocks: 17, par: 15, solution: 'S R R W R R R D D L L K L L L',
           intro: {
             tr: 'Işıkta bekle, anahtarı al, bariyeri aç. Hepsi bir arada!',
             en: 'Wait at the light, take the key, open the barrier. All together!',
           },
         },
         {
-          id: '4-5',
+          id: '3-5',
           name: { tr: 'Yol Çalışması', en: 'Road Works' },
           map: [
             '.........',
@@ -1852,28 +1762,136 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
             '...##c#F.',
           ],
           lights: ['red'],
-          dir: 'right', maxBlocks: 12, par: 9, solution: 'S R R D W D D 4(R)',
+          dir: 'right', maxBlocks: 13, par: 11, solution: 'S R R D W D D R R R R',
           intro: {
             tr: 'Yolda çalışma var {cone}, oradan geçilmez! Başka yoldan git.',
             en: 'Road works ahead {cone}, no way through! Take another road.',
           },
         },
         {
-          id: '4-6',
+          id: '3-6',
           name: { tr: 'Şehir Finali', en: 'City Finale' },
           map: [
-            '..........',
-            '.S#c#L#k#.',
-            '........#.',
-            '........#.',
-            '.F#G#c#L#.',
-            '..........',
+            '.........',
+            '.S#cL#k#.',
+            '.......#.',
+            '.F#G#cL#.',
+            '.........',
           ],
           lights: ['red', 'green'],
-          dir: 'right', maxBlocks: 17, par: 13, solution: 'S 3(R) W 4(R) 3(D) 4(L) K 3(L)',
+          dir: 'right', maxBlocks: 19, par: 17, solution: 'S R R W R R R R D D L L L K L L L',
           intro: {
-            tr: 'Şehrin son bölümü! Işıklar, anahtar, bariyer ve altınlar. Döngülerle kısa bir program yaz.',
-            en: 'The last city level! Lights, a key, a barrier and coins. Write a short program with loops.',
+            tr: 'Şehrin son bölümü! Işıklar, anahtar, bariyer ve altınlar hepsi bir arada.',
+            en: 'The last city level! Lights, a key, a barrier and coins, all together.',
+          },
+        },
+      ],
+    },
+    {
+      id: 4, theme: 'snow', color: '#3FA7D6',
+      name: { tr: 'Karlı Tepeler', en: 'Snowy Hills' },
+      concept: { tr: 'Döngüler', en: 'Loops' },
+      palette: P1.concat(['key', 'loop']),
+      levels: [
+        {
+          id: '4-1', tutorial: 'loop',
+          name: { tr: 'Tekrarla!', en: 'Repeat!' },
+          palette: P1.concat(['loop']),
+          map: [
+            '..........',
+            '..........',
+            '.S###c###F',
+            '..........',
+            '..........',
+          ],
+          dir: 'right', maxBlocks: 4, par: 3, solution: 'S 8(R)',
+          intro: {
+            tr: 'Sekiz tane {right} koymaya yer yok! {loop} Tekrarla bloğunu ekle, içine {right} koy ve sayıyı 8 yap.',
+            en: 'No room for eight {right} blocks! Add a {loop} Repeat block, put {right} inside and set it to 8.',
+          },
+        },
+        {
+          id: '4-2',
+          name: { tr: 'Merdiven', en: 'Staircase' },
+          palette: P1.concat(['loop']),
+          map: [
+            '..........',
+            '.......F..',
+            '......#c..',
+            '.....c#...',
+            '....##....',
+            '...S#.....',
+          ],
+          dir: 'right', maxBlocks: 6, par: 4, solution: 'S 4(R U)',
+          intro: {
+            tr: 'Merdiven gibi bir yol! Hangi iki blok tekrar ediyor? İkisini birlikte {loop} içine koy.',
+            en: 'A road like a staircase! Which two blocks repeat? Put both inside a {loop}.',
+          },
+        },
+        {
+          id: '4-3',
+          name: { tr: 'İki Döngü', en: 'Two Loops' },
+          map: [
+            '..........',
+            '.S#c###c#.',
+            '........#.',
+            '........#.',
+            '........F.',
+            '..........',
+          ],
+          dir: 'right', maxBlocks: 7, par: 5, solution: 'S 7(R) 3(D)',
+          intro: {
+            tr: 'Birden fazla {loop} kullanabilirsin: biri sağa, biri aşağı!',
+            en: 'You can use more than one {loop}: one for right, one for down!',
+          },
+        },
+        {
+          id: '4-4',
+          name: { tr: 'Zikzak', en: 'Zigzag' },
+          map: [
+            '..........',
+            '..........',
+            '.#c#.#c#..',
+            '.S.###.##F',
+            '..........',
+          ],
+          dir: 'up', maxBlocks: 10, par: 8, solution: 'S 2(U R R D R R)',
+          intro: {
+            tr: 'Yol bir desenle tekrar ediyor. Deseni bul ve {loop} içine koy!',
+            en: 'The road repeats a pattern. Find it and put it inside a {loop}!',
+          },
+        },
+        {
+          id: '4-5',
+          name: { tr: 'Anahtar Döngüsü', en: 'Key Loop' },
+          map: [
+            '..........',
+            '..k.k.k...',
+            '.S#G#G#G#F',
+            '..........',
+            '..........',
+          ],
+          dir: 'right', maxBlocks: 11, par: 9, solution: 'S 3(R U D K R) R R',
+          intro: {
+            tr: 'Üç anahtar, üç bariyer. Tekrar eden parçayı bulabilir misin? {key} bloğu da döngüye girebilir.',
+            en: 'Three keys, three barriers. Can you find the repeating part? The {key} block can go inside a loop too.',
+          },
+        },
+        {
+          id: '4-6',
+          name: { tr: 'Karlı Dağ', en: 'Snowy Mountain' },
+          map: [
+            '..........',
+            '....c##...',
+            '...##.#c..',
+            '..##...##.',
+            '.S#.....F.',
+            '..........',
+          ],
+          dir: 'right', maxBlocks: 10, par: 8, solution: 'S 3(R U) R 3(R D)',
+          intro: {
+            tr: 'Dağın bir yanı yukarı, öbür yanı aşağı iniyor. İki ayrı döngü dene!',
+            en: 'One side of the mountain goes up, the other goes down. Try two different loops!',
           },
         },
       ],
@@ -4788,6 +4806,20 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
         else if (e.key === 'Escape') UI.closePin();
       });
       UI.initFullscreen();
+      // gizli sıfırlama (öğretmen için): giriş ekranındaki Bip'e art arda 3 kez dokununca ilerleme silinir.
+      // Ayarlardaki "İlerlemeyi sıfırla" ile aynıdır: ses, müzik, dil ve öğretmen modu korunur.
+      let taps = 0, lastTap = 0;
+      $('.title-mascot').addEventListener('pointerdown', () => {
+        const now = performance.now();
+        taps = now - lastTap < 700 ? taps + 1 : 1;
+        lastTap = now;
+        if (taps < 3) return;
+        taps = 0;
+        CC.Save.reset();
+        CC.Audio.init();
+        CC.Audio.play('remove');
+        UI.toast(CC.t('title.reset'));
+      });
       if (Art.img.logo) $('.logo-word').innerHTML = '<img class="logo-img" src="' + Art.img.logo.src + '" alt="Code Car">';
       if (Art.img.bg_title) $('#scr-title').style.background = 'url(' + Art.img.bg_title.src + ') center / cover';
       UI.updateTitle();
