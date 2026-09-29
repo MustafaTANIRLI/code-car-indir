@@ -462,8 +462,92 @@ button { font: inherit; cursor: pointer; -webkit-appearance: none; appearance: n
 .car-card .need { display: flex; align-items: center; gap: 6px; font-size: 21px; font-weight: 900; color: #8a97a8; height: 50px; }
 .car-card .need .ico { width: 26px; height: 26px; }
 .car-card.locked canvas { filter: grayscale(1) brightness(1.15) opacity(.45); }
-.car-card .selmark { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; background: #3cc45a; color: #fff; display: flex; align-items: center; justify-content: center; }
-.car-card .selmark .ico { width: 24px; height: 24px; }
+.selmark { position: absolute; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; background: #3cc45a; color: #fff; display: flex; align-items: center; justify-content: center; z-index: 2; }
+.selmark .ico { width: 24px; height: 24px; }
+
+/* garaj sekmeleri: Arabalar | Özel Arabalar */
+.garage-tabs {
+  position: absolute; left: 50%; top: 16px; transform: translateX(-50%); display: flex; gap: 6px; padding: 6px;
+  border-radius: 26px; background: rgba(255, 255, 255, .62); box-shadow: 0 4px 0 rgba(0, 0, 0, .1);
+}
+.gtab {
+  height: 54px; border: 0; border-radius: 20px; padding: 0 22px; display: inline-flex; align-items: center; gap: 9px;
+  background: transparent; color: #3a4a63; font-size: 23px; font-weight: 900; transition: background .15s, box-shadow .15s;
+}
+.gtab .ico { width: 28px; height: 28px; }
+.gtab.sel { background: #fff; color: #2d3b52; box-shadow: 0 4px 0 rgba(0, 0, 0, .14); }
+/* özel sekme hep renkli: çocuk garajda hemen fark etsin */
+.gtab-special, .gtab-special.sel { background: linear-gradient(135deg, #ff8fc8, #a98bf5 55%, #6fb8f0); color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .2); }
+.gtab-special.sel { background: linear-gradient(135deg, #ff6fb8, #9b6cf2 55%, #2e9be6); box-shadow: 0 4px 0 rgba(0, 0, 0, .18), 0 0 0 3px #fff; }
+.gtab-special .ico { color: #ffe066; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, .3)); animation: twinkle 1.6s ease-in-out infinite; }
+.gtab-count { font-size: 16px; font-weight: 900; padding: 3px 9px; border-radius: 11px; background: rgba(0, 0, 0, .22); color: #fff; text-shadow: none; }
+
+/* özel arabalar: yıldızlı gece moru vitrin */
+#scr-garage.special-on {
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, .55) 0 1.6px, transparent 2.6px) 0 0 / 96px 96px,
+    radial-gradient(circle, rgba(255, 236, 160, .45) 0 1.2px, transparent 2.2px) 48px 52px / 96px 96px,
+    radial-gradient(ellipse 60% 55% at 50% 38%, rgba(157, 108, 242, .75), transparent 72%),
+    linear-gradient(180deg, #3a2a8c, #221654);
+}
+#special-page { position: absolute; top: 96px; left: 0; right: 0; bottom: 0; }
+.special-head { text-align: center; color: #fff; }
+.special-head h2 { margin: 0; font-size: 34px; font-weight: 900; text-shadow: 0 3px 0 rgba(0, 0, 0, .3); }
+.special-head p { margin: 2px 0 0; font-size: 20px; font-weight: 800; color: #ffe38a; text-shadow: 0 2px 0 rgba(0, 0, 0, .25); }
+#special-grid { position: absolute; top: 82px; left: 32px; right: 32px; bottom: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+.scard {
+  --frame: #fff; --c1: #fff; --c2: #f1f4f8;
+  position: relative; display: flex; padding: 6px; border-radius: 30px; background: var(--frame);
+  box-shadow: 0 8px 0 rgba(0, 0, 0, .28), 0 18px 34px rgba(0, 0, 0, .35);
+}
+.scard.car-unicorn { --frame: linear-gradient(160deg, #ff5f7e, #ff9f45, #ffd84d, #5fd68a, #4fb3ff, #a77bff); --c1: #fff4fc; --c2: #eadfff; }
+.scard.car-princess { --frame: linear-gradient(160deg, #fff4b8, #ffcf3f 35%, #d99a16 65%, #ffe98f); --c1: #fcefff; --c2: #f0d3ff; }
+.scard.car-monster { --frame: linear-gradient(160deg, #c3f57d, #5fb512 45%, #2b560c); --c1: #f3ffe6; --c2: #d4f1b3; }
+.scard.car-nitro { --frame: linear-gradient(160deg, #2ee6ff, #1f6fd1 45%, #ff7b1c); --c1: #fff3e6; --c2: #d8f6ff; }
+.scard.sel { box-shadow: 0 8px 0 rgba(0, 0, 0, .28), 0 0 0 5px #3cc45a, 0 0 34px 8px rgba(120, 255, 150, .55); }
+.scard-in {
+  flex: 1; min-width: 0; border-radius: 25px; background: linear-gradient(180deg, var(--c1), var(--c2));
+  display: flex; flex-direction: column; align-items: center; padding: 8px 12px 16px; position: relative; overflow: hidden;
+}
+.scard-cv { width: 100%; flex: 1; min-height: 0; display: block; }
+.scard-name { font-size: 25px; font-weight: 900; color: #2d3b52; text-align: center; line-height: 1.1; }
+.scard-fx { font-size: 16px; font-weight: 800; color: #5b6b84; text-align: center; line-height: 1.25; margin: 5px 0 12px; min-height: 2.5em; }
+.scard .btn { height: 52px; font-size: 21px; min-width: 150px; }
+.scard .need { display: flex; align-items: center; height: 52px; font-size: 21px; font-weight: 900; color: #25913d; }
+.scard-lock {
+  display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 20px; border-radius: 18px;
+  background: linear-gradient(180deg, #ffe27a, #ffc93c); color: #7a4b00; font-size: 20px; font-weight: 900; box-shadow: 0 5px 0 #d49b10;
+}
+.scard-lock .ico { width: 24px; height: 24px; }
+.scard.locked .scard-cv { filter: saturate(.8) brightness(.93); }
+.scard-badge {
+  position: absolute; right: 12px; top: 12px; width: 58px; height: 58px; border-radius: 50%;
+  background: linear-gradient(180deg, #ffe27a, #ffc93c); color: #7a4b00; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 0 #d49b10, 0 0 0 5px rgba(255, 255, 255, .6); animation: lockWiggle 2.6s ease-in-out infinite; pointer-events: none;
+}
+.scard-badge .ico { width: 30px; height: 30px; }
+.scard-relock {
+  position: absolute; top: 14px; left: 14px; z-index: 2; width: 42px; height: 42px; border: 0; border-radius: 50%; padding: 0;
+  background: rgba(255, 255, 255, .88); color: #7d8a9b; display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 0 rgba(0, 0, 0, .12);
+}
+.scard-relock .ico { width: 22px; height: 22px; }
+.scard-relock:active { transform: translateY(2px); box-shadow: none; }
+
+/* ödül kutlaması */
+.reward-card { width: 680px; text-align: center; padding: 18px 30px 26px; overflow: hidden; }
+.reward-rays {
+  position: absolute; left: 50%; top: 128px; width: 1000px; height: 1000px; margin: -500px 0 0 -500px; pointer-events: none;
+  background: repeating-conic-gradient(rgba(255, 196, 40, .3) 0 9deg, rgba(255, 196, 40, 0) 9deg 18deg);
+  -webkit-mask-image: radial-gradient(circle, #000 12%, transparent 46%); mask-image: radial-gradient(circle, #000 12%, transparent 46%);
+  animation: spin 16s linear infinite;
+}
+.reward-car { position: relative; display: block; width: 620px; height: 230px; margin: 0 auto; }
+.card h2.reward-title { position: relative; margin: 0; color: #ff8a00; font-size: 52px; }
+.reward-text { position: relative; font-size: 30px; font-weight: 900; color: #7446d0; }
+.reward-sub { position: relative; margin: 6px 0 20px; font-size: 20px; font-weight: 800; color: #5b6b84; }
+.reward-actions { position: relative; display: flex; justify-content: center; align-items: center; gap: 18px; }
+.reward-select { min-width: 250px; }
+.reward-confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
 /* ---------- dikey uyarısı ---------- */
 #rotate-hint { display: none; position: fixed; inset: 0; z-index: 999; background: #3c7a31; color: #fff; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-size: 20px; font-weight: 800; padding: 30px; }
@@ -486,6 +570,9 @@ button { font: inherit; cursor: pointer; -webkit-appearance: none; appearance: n
 @keyframes nodePulse { 0%, 100% { box-shadow: 0 8px 0 var(--wcd), 0 0 0 0 rgba(255, 255, 255, .8); } 50% { box-shadow: 0 8px 0 var(--wcd), 0 0 0 14px rgba(255, 255, 255, 0); } }
 @keyframes poof { from { transform: scale(.4); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
 @keyframes rot { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+@keyframes twinkle { 0%, 100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.22) rotate(18deg); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes lockWiggle { 0%, 80%, 100% { transform: rotate(0); } 85% { transform: rotate(-9deg); } 90% { transform: rotate(8deg); } 95% { transform: rotate(-4deg); } }
 
 </style>
 </head>
@@ -528,10 +615,20 @@ button { font: inherit; cursor: pointer; -webkit-appearance: none; appearance: n
   <section id="scr-garage" class="screen theme-city hidden">
     <div class="topbar">
       <button class="btn-round btn-back" data-back><span class="ico" data-icon="back"></span></button>
-      <h1 data-i18n="garage.title"></h1>
+      <div class="garage-tabs">
+        <button class="gtab" data-tab="cars"><span class="ico" data-icon="car"></span><span data-i18n="garage.tabCars"></span></button>
+        <button class="gtab gtab-special" data-tab="special"><span class="ico" data-icon="sparkle"></span><span data-i18n="garage.tabSpecial"></span><span class="gtab-count"></span></button>
+      </div>
       <div class="chip chip-stars"><span class="ico star" data-icon="star"></span><span class="stars-total">0</span></div>
     </div>
     <div id="car-grid"></div>
+    <div id="special-page" class="hidden">
+      <div class="special-head">
+        <h2 data-i18n="special.title"></h2>
+        <p data-i18n="special.sub"></p>
+      </div>
+      <div id="special-grid"></div>
+    </div>
   </section>
 
   <!-- ============ OYUN ============ -->
@@ -641,7 +738,7 @@ button { font: inherit; cursor: pointer; -webkit-appearance: none; appearance: n
         <span class="set-right"><span id="upd-status" class="upd-status"></span><button id="btn-update" class="btn btn-blue btn-small"></button></span>
       </div>
       <button class="btn btn-go set-close" data-i18n="common.ok"></button>
-      <div class="set-version">Code Car · demo 1.5</div>
+      <div class="set-version">Code Car · demo 1.6</div>
     </div>
   </div>
 
@@ -668,6 +765,21 @@ button { font: inherit; cursor: pointer; -webkit-appearance: none; appearance: n
       </div>
       <button class="btn btn-grey btn-small pin-cancel" data-i18n="common.cancel"></button>
     </div>
+  </div>
+
+  <div id="ov-reward" class="overlay hidden">
+    <div class="card reward-card">
+      <div class="reward-rays"></div>
+      <canvas class="reward-car"></canvas>
+      <h2 class="reward-title" data-i18n="reward.title"></h2>
+      <div class="reward-text"></div>
+      <div class="reward-sub" data-i18n="reward.sub"></div>
+      <div class="reward-actions">
+        <button class="btn btn-grey btn-small reward-close" data-i18n="reward.close"></button>
+        <button class="btn btn-go reward-select"><span class="ico" data-icon="car"></span><span data-i18n="reward.select"></span></button>
+      </div>
+    </div>
+    <canvas class="reward-confetti"></canvas>
   </div>
 
   <div id="toast" class="toast hidden"></div>
@@ -734,7 +846,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
   CC.Save = {
     data: null,
     defaults() {
-      return { v: 2, stars: {}, drafts: {}, car: 'racer', sfx: true, music: true, lang: 'tr', unlockAll: false, seen: {}, carsSeen: 0 };
+      // special: öğretmenin açtığı özel arabalar ({unicorn: true, ...}); öğretmen modu bunları açmaz
+      return { v: 2, stars: {}, drafts: {}, car: 'racer', sfx: true, music: true, lang: 'tr', unlockAll: false, seen: {}, carsSeen: 0, special: {} };
     },
     load() {
       let d = null;
@@ -745,6 +858,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       const table = v => !!v && typeof v === 'object' && !Array.isArray(v);
       if (!table(this.data.stars)) this.data.stars = {};
       if (!table(this.data.drafts)) this.data.drafts = {};
+      if (!table(this.data.special)) this.data.special = {};
       if (old < 2) this.migrate();
       return this.data;
     },
@@ -767,7 +881,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       try { localStorage.setItem(KEY, JSON.stringify(this.data)); } catch (e) { /* özel pencere: sessizce geç */ }
     },
     reset() {
-      // öğretmen modu da ayar sayılır: ilerlemeyi sıfırlamak onu şifresiz kapatmasın
+      // öğretmen modu da ayar sayılır: ilerlemeyi sıfırlamak onu şifresiz kapatmasın.
+      // Açılmış özel arabalar öğrencinin ödülüdür: tablet sıfırlanınca (yeni öğrenci) yeniden kilitlenir.
       const keep = { sfx: this.data.sfx, music: this.data.music, lang: this.data.lang, unlockAll: this.data.unlockAll };
       this.data = Object.assign(this.defaults(), keep);
       this.save();
@@ -796,8 +911,21 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       'title.tagline': 'Kodla • Sür • Kazan!',
       'title.hello': 'Merhaba, ben Bip!', 'title.reset': 'Oyun sıfırlandı.',
       'levels.title': 'Bölüm Seç', 'levels.locked': 'Önce önceki bölümü bitir!',
-      'garage.title': 'Garaj', 'garage.select': 'Seç', 'garage.selected': 'Seçili',
+      'garage.tabCars': 'Arabalar', 'garage.tabSpecial': 'Özel Arabalar', 'garage.select': 'Seç', 'garage.selected': 'Seçili',
       'garage.locked': 'Bu araba için {n} yıldız topla!', 'garage.unlocked': 'Yeni araba açıldı: {car}!',
+      'special.title': 'Özel Arabalar Koleksiyonu',
+      'special.sub': 'Bu arabalar ödül! Derste uslu durursan öğretmenin açar.',
+      'special.locked': 'Öğretmen açar',
+      'special.pinUnlock': 'Bu ödül arabasını öğretmen açar.',
+      'special.pinRelock': 'Öğretmen bu arabayı yeniden kilitleyebilir.',
+      'special.relocked': '{car} yeniden kilitlendi.',
+      'special.fx.unicorn': 'Arkasında gökkuşağı bırakır!',
+      'special.fx.princess': 'Kalpler ve pırıltılar saçar!',
+      'special.fx.monster': 'Dev tekerlekleriyle hoplaya zıplaya gider!',
+      'special.fx.nitro': 'Nitro alevleriyle şimşek gibi gider!',
+      'reward.title': 'Tebrikler!', 'reward.text': '{car} artık senin!',
+      'reward.sub': 'Derste uslu durduğun için bu ödülü kazandın.',
+      'reward.select': 'Hemen Seç!', 'reward.close': 'Kapat',
       'game.program': 'PROGRAM', 'game.run': 'BAŞLAT', 'game.stop': 'DUR', 'game.continue': 'DEVAM',
       'game.par': 'En iyi: {n} blok',
       'game.full': 'Program dolu! Bu bölümde en fazla {n} blok kullanabilirsin.',
@@ -838,7 +966,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       'settings.title': 'Ayarlar', 'settings.sound': 'Ses efektleri', 'settings.music': 'Müzik', 'settings.lang': 'Dil',
       'settings.unlock': 'Bütün bölümleri aç (öğretmen)', 'settings.reset': 'İlerlemeyi sıfırla', 'settings.resetBtn': 'Sıfırla',
       'settings.resetConfirm': 'Bütün yıldızlar ve programlar silinsin mi?',
-      'settings.unlockOn': 'Öğretmen modu açık: bütün bölümler ve arabalar açıldı.',
+      'settings.unlockOn': 'Öğretmen modu açık: bütün bölümler ve arabalar açıldı (özel arabalar hariç).',
       'settings.unlockOff': 'Öğretmen modu kapandı.',
       'pin.title': 'Öğretmen şifresi', 'pin.text': 'Bu ayarı öğretmen değiştirir.',
       'pin.wrong': 'Şifre yanlış, tekrar dene.',
@@ -861,14 +989,28 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       'tut.loop4': 'Hazır! {play} düğmesine bas.',
       'cars.racer': 'Kırmızı Şimşek', 'cars.blue': 'Mavi Roket', 'cars.taxi': 'Sarı Taksi',
       'cars.police': 'Polis Arabası', 'cars.fire': 'İtfaiye', 'cars.ice': 'Dondurmacı',
+      'cars.unicorn': 'Gökkuşağı Unicorn', 'cars.princess': 'Prenses Arabası', 'cars.monster': 'Canavar Kamyon', 'cars.nitro': 'Süper Nitro',
     },
     en: {
       'title.play': 'PLAY', 'title.garage': 'GARAGE', 'title.settings': 'SETTINGS',
       'title.tagline': 'Code • Drive • Win!',
       'title.hello': 'Hi, I am Bip!', 'title.reset': 'The game has been reset.',
       'levels.title': 'Choose a Level', 'levels.locked': 'Finish the previous level first!',
-      'garage.title': 'Garage', 'garage.select': 'Choose', 'garage.selected': 'Chosen',
+      'garage.tabCars': 'Cars', 'garage.tabSpecial': 'Special Cars', 'garage.select': 'Choose', 'garage.selected': 'Chosen',
       'garage.locked': 'Collect {n} stars for this car!', 'garage.unlocked': 'New car unlocked: {car}!',
+      'special.title': 'Special Cars Collection',
+      'special.sub': 'These cars are rewards! Behave well in class and your teacher will unlock them.',
+      'special.locked': 'Teacher unlocks',
+      'special.pinUnlock': 'The teacher unlocks this reward car.',
+      'special.pinRelock': 'The teacher can lock this car again.',
+      'special.relocked': '{car} is locked again.',
+      'special.fx.unicorn': 'Leaves a rainbow behind!',
+      'special.fx.princess': 'Scatters hearts and sparkles!',
+      'special.fx.monster': 'Bounces along on giant wheels!',
+      'special.fx.nitro': 'Zooms like lightning with nitro flames!',
+      'reward.title': 'Congratulations!', 'reward.text': '{car} is yours now!',
+      'reward.sub': 'You earned this reward for behaving well in class.',
+      'reward.select': 'Choose it!', 'reward.close': 'Close',
       'game.program': 'PROGRAM', 'game.run': 'GO', 'game.stop': 'STOP', 'game.continue': 'GO ON',
       'game.par': 'Best: {n} blocks',
       'game.full': 'Program is full! You can use {n} blocks in this level.',
@@ -909,7 +1051,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       'settings.title': 'Settings', 'settings.sound': 'Sound effects', 'settings.music': 'Music', 'settings.lang': 'Language',
       'settings.unlock': 'Unlock all levels (teacher)', 'settings.reset': 'Reset progress', 'settings.resetBtn': 'Reset',
       'settings.resetConfirm': 'Delete all stars and programs?',
-      'settings.unlockOn': 'Teacher mode on: every level and car is unlocked.',
+      'settings.unlockOn': 'Teacher mode on: every level and car is unlocked (except special cars).',
       'settings.unlockOff': 'Teacher mode off.',
       'pin.title': 'Teacher PIN', 'pin.text': 'Only the teacher changes this setting.',
       'pin.wrong': 'Wrong PIN, try again.',
@@ -932,6 +1074,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       'tut.loop4': 'Ready! Press {play}.',
       'cars.racer': 'Red Flash', 'cars.blue': 'Blue Rocket', 'cars.taxi': 'Yellow Taxi',
       'cars.police': 'Police Car', 'cars.fire': 'Fire Truck', 'cars.ice': 'Ice Cream Van',
+      'cars.unicorn': 'Rainbow Unicorn', 'cars.princess': 'Princess Car', 'cars.monster': 'Monster Truck', 'cars.nitro': 'Super Nitro',
     },
   };
 
@@ -2074,6 +2217,13 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
     star: (a, t) => { a.tone(1568, .12, { type: 'triangle', vol: .2 }); a.tone(2093, .28, { type: 'triangle', vol: .15, when: t + .07 }); },
     horn: (a, t) => [0, .2].forEach(d => { a.tone(440, .13, { type: 'square', vol: .07, filter: 1800, when: t + d }); a.tone(554, .13, { type: 'square', vol: .05, filter: 1800, when: t + d }); }),
     unlock: (a, t) => [523, 784, 1047, 1319, 1568].forEach((f, i) => a.tone(f, .22, { type: 'triangle', vol: .17, when: t + i * .07 })),
+    /* özel araba ödülü: kısa bir borazan ve ardından parıltı */
+    reward: (a, t) => {
+      [392, 523, 659, 784].forEach((f, i) => a.tone(f, .16, { type: 'square', vol: .08, filter: 3200, when: t + i * .1 }));
+      [523, 659, 784, 1047].forEach(f => a.tone(f, 1, { type: 'triangle', vol: .11, when: t + .42 }));
+      a.tone(1047, .9, { type: 'square', vol: .06, filter: 3000, when: t + .42 });
+      [2093, 2637, 3136, 2637, 3136, 3951].forEach((f, i) => a.tone(f, .14, { vol: .07, when: t + .5 + i * .085 }));
+    },
     whoosh: (a) => a.noise(.3, { vol: .12, freq: 400, freqTo: 3000, ftype: 'bandpass' }),
     /* marş: iki kısa "rrr", sonra motor kükremesi */
     ignite: (a, t) => {
@@ -2454,22 +2604,28 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       ctx.fillStyle = '#fff6b3'; ell(ctx, 47, -16, 2.4, 4); ctx.fill(); ell(ctx, 47, 16, 2.4, 4); ctx.fill();
     },
   };
+  Art.PAINT = PAINT;   // özel arabalar (js/special.js) kendi çizimlerini buraya ekler
+  Art.CAR_FX = {};     // özel arabaların eklentileri: gölge, alev, zıplama, parıltı, yoldaki iz (js/special.js)
 
-  /* (x,y) merkez, len uzunluk, angle 0 = sağa */
+  /* (x,y) merkez, len uzunluk, angle 0 = sağa. opts: scale, speed (0..1.5, alev ve zıplama için), dist (gidilen yol) */
   Art.drawCar = function (ctx, id, x, y, len, angle, time, opts) {
     opts = opts || {};
-    const k = len / 100;
+    const k = len / 100, t = time || 0;
     const img = Art.img['car_' + id];
     const sc = opts.scale || 1;
+    const fx = Art.CAR_FX[id] || {};
     if (!img) {
       ctx.save();
       ctx.translate(x + len * .05, y + len * .08); ctx.rotate(angle); ctx.scale(k * sc, k * sc);
       ctx.fillStyle = 'rgba(0,0,0,.24)';
-      rr(ctx, -49, -25, 99, 50, 16); ctx.fill();
+      if (fx.shadow) fx.shadow(ctx); else rr(ctx, -49, -25, 99, 50, 16);
+      ctx.fill();
       ctx.restore();
     }
     ctx.save();
     ctx.translate(x, y); ctx.rotate(angle); ctx.scale(sc, sc);
+    if (fx.under) { ctx.save(); ctx.scale(k, k); fx.under(ctx, t, opts); ctx.restore(); }
+    if (fx.wobble) fx.wobble(ctx, t, opts);
     if (img) {
       ctx.rotate(Math.PI / 2);
       const h = len * 1.02, w = h * img.width / img.height;
@@ -2479,7 +2635,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       ctx.drawImage(img, -w / 2, -h / 2, w, h);
     } else {
       ctx.scale(k, k);
-      (PAINT[id] || PAINT.racer)(ctx, time || 0);
+      (PAINT[id] || PAINT.racer)(ctx, t, opts);
+      if (fx.over) fx.over(ctx, t, opts);
     }
     ctx.restore();
   };
@@ -2865,6 +3022,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
     gear: '<circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M12 2.6v3M12 18.4v3M2.6 12h3M18.4 12h3M5.4 5.4l2.1 2.1M16.5 16.5l2.1 2.1M5.4 18.6l2.1-2.1M16.5 7.5l2.1-2.1" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>',
     back: '<path d="M15 4.5L7.5 12l7.5 7.5" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>',
     lock: '<rect x="5" y="10.5" width="14" height="10.5" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2.8"/>',
+    unlock: '<rect x="5" y="10.5" width="14" height="10.5" rx="2.5" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 7.7-1.6" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>',
+    sparkle: '<path d="M10 2.5l1.9 6.1 6.1 1.9-6.1 1.9L10 18.5l-1.9-6.1L2 10.5l6.1-1.9z" fill="currentColor"/><path d="M18.5 13.5l.95 2.55 2.55.95-2.55.95-.95 2.55-.95-2.55L15 17l2.55-.95z" fill="currentColor"/>',
     star: '<path d="M12 2.4l2.9 5.9 6.5.95-4.7 4.6 1.1 6.5L12 17.3l-5.8 3.05 1.1-6.5-4.7-4.6 6.5-.95z" fill="currentColor" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>',
     check: '<path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>',
     cross: '<path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linecap="round"/>',
@@ -2958,6 +3117,582 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       '<rect x="28" y="128" width="144" height="13" rx="6.5" fill="#dfe4ea"/>' +
       mouth + extra + '</svg>';
   };
+})(window);
+
+</script>
+<script>
+/* Code Car — özel arabalar: öğretmenin ödül olarak tek tek açtığı 4 araba.
+   - Çizimler diğer arabalar gibi SAĞA bakar (açı 0) ve 100 birim boyunda çizilir. web/img'de car_<ad>.png
+     varsa resim kullanılır; alev, zıplama ve yoldaki izler resimle de çalışır (Art.CAR_FX).
+   - CarFx: yolda bırakılan gökkuşağı, kalpler, toz ve kıvılcımlar (tahta, giriş ekranı, garaj vitrini).
+   - Showroom / Confetti: garajdaki koleksiyon kartlarında ve ödül kutlamasında yerinde "süren" araba. */
+(function (root) {
+  'use strict';
+  const CC = root.CC, Art = CC.Art;
+  const rr = Art.rr, circ = Art.circ, ell = Art.ell;
+  const pick = a => a[(Math.random() * a.length) | 0];
+
+  /* Koleksiyon sırası: kızlar ve erkekler için ikişer araba, karışık dizilir. */
+  Art.SPECIAL_CARS = [{ id: 'unicorn' }, { id: 'monster' }, { id: 'princess' }, { id: 'nitro' }];
+  Art.isSpecial = id => Art.SPECIAL_CARS.some(c => c.id === id);
+
+  /* ---------- çizim yardımcıları ---------- */
+  function outline(ctx, col, w) { ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = col; ctx.lineWidth = w; ctx.stroke(); }
+  function paint(ctx, fill, col, w) { ctx.fillStyle = fill; ctx.fill(); if (col) outline(ctx, col, w); }
+  function sparkle(ctx, x, y, r, col) { Art.starPath(ctx, x, y, r, r * .38, 4); ctx.fillStyle = col; ctx.fill(); }
+  /* kalp: rot 0'da uç aşağıda (+y); arabada kalbin üstü öne baksın diye rot = π/2 */
+  function heart(ctx, x, y, r, rot) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(rot || 0);
+    ctx.beginPath();
+    ctx.moveTo(0, r * .95);
+    ctx.bezierCurveTo(-r * 1.35, r * .05, -r * .95, -r * 1.05, 0, -r * .42);
+    ctx.bezierCurveTo(r * .95, -r * 1.05, r * 1.35, r * .05, 0, r * .95);
+    ctx.closePath();
+    ctx.restore();
+  }
+  Art.heartPath = heart;
+  function gem(ctx, x, y, r, col) {
+    ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x, y - r); ctx.lineTo(x - r, y); ctx.lineTo(x, y + r); ctx.closePath();
+    paint(ctx, col, '#ffffff', .9);
+  }
+  /* tepeden lastik: w yol yönündeki boy, h en */
+  function tire(ctx, x, y, w, h, out, fill) {
+    rr(ctx, x - w / 2, y - h / 2, w, h, Math.min(w, h) * .4);
+    paint(ctx, fill || '#2a2d36', out, 1.6);
+    ctx.fillStyle = 'rgba(255,255,255,.16)'; rr(ctx, x - w / 2 + 2.5, y - h / 2 + 1.6, w - 5, h * .26, 1.4); ctx.fill();
+  }
+  /* gövdeye iki ton: ışık sol üstten gelir (araba sağa bakarken sol yan -y açık, sağ yan +y koyu) */
+  function twoTone(ctx, path, dark, darkY, light, lightH) {
+    ctx.save(); path(); ctx.clip();
+    ctx.fillStyle = dark; ctx.fillRect(-70, darkY, 140, 40);
+    if (light) { ctx.fillStyle = light; ctx.fillRect(-70, -60, 140, 60 - lightH); }
+    ctx.restore();
+  }
+
+  /* ---------- Gökkuşağı Unicorn ---------- */
+  const RAINBOW = ['#ff5f7e', '#ff9f45', '#ffd84d', '#5fd68a', '#4fb3ff', '#a77bff'];
+
+  /* yele: ön camın arkasından başlar, tavan boyunca uzanır ve arkadan dalgalı bir kuyruk olarak taşar */
+  function unicornMane(ctx, t, sp, out) {
+    const X0 = 1, X1 = -67, N = 52, amp = 2 + 3 * sp;
+    const cy = x => (x < -24 ? Math.sin(t * 6.5 - x * .2) * amp * Math.pow((-24 - x) / 43, 1.3) : 0);
+    const hw = x => {
+      let w;
+      if (x > -5) w = 5.5 + (1 - x) * .45;
+      else if (x > -40) w = 8.2;
+      else if (x > -58) w = 8.2 + (-40 - x) / 18 * 2.8;
+      else w = 11 * Math.sqrt(Math.max(0, (x - X1) / (-58 - X1)));
+      return w > 2 ? w + Math.sin(x * .85) * .55 : w;  // tutam tutam
+    };
+    const xs = [];
+    for (let i = 0; i <= N; i++) xs.push(X0 + (X1 - X0) * i / N);
+    const band = (o0, o1) => {
+      ctx.beginPath();
+      xs.forEach((x, i) => { const y = cy(x) + hw(x) * o0; if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); });
+      for (let i = xs.length - 1; i >= 0; i--) ctx.lineTo(xs[i], cy(xs[i]) + hw(xs[i]) * o1);
+      ctx.closePath();
+    };
+    // her renk bir sonrakinin altında kalır: şeritler arasında boşluk görünmez
+    RAINBOW.forEach((col, b) => { band(-1 + b / 3, 1); ctx.fillStyle = col; ctx.fill(); });
+    ctx.fillStyle = 'rgba(255,255,255,.35)';
+    band(-.92, -.7); ctx.fill();
+    band(-1, 1); outline(ctx, out, 1.8);
+  }
+
+  function unicornHorn(ctx) {
+    const path = () => { ctx.beginPath(); ctx.moveTo(52, 0); ctx.lineTo(19.5, -5.8); ctx.quadraticCurveTo(15.8, 0, 19.5, 5.8); ctx.closePath(); };
+    path(); ctx.fillStyle = '#ffd65e'; ctx.fill();
+    ctx.save(); path(); ctx.clip();
+    ctx.fillStyle = '#ffeaa0'; ctx.fillRect(14, -7, 42, 4.4);
+    ctx.strokeStyle = '#eea226'; ctx.lineWidth = 2;
+    for (let x = 20; x < 52; x += 6) { ctx.beginPath(); ctx.moveTo(x, -7); ctx.lineTo(x + 5, 7); ctx.stroke(); }
+    ctx.restore();
+    path(); outline(ctx, '#b67614', 1.6);
+  }
+  const UNICORN_TIP = 51.5;
+
+  Art.PAINT.unicorn = function (ctx, t, o) {
+    const OUT = '#6c4fa3', sp = Math.min(1, (o && o.speed) || 0);
+    [[-27, -24.5, 20, 11], [-27, 24.5, 20, 11], [27, -24, 19, 10.5], [27, 24, 19, 10.5]].forEach(w => tire(ctx, w[0], w[1], w[2], w[3], OUT, '#4a3d66'));
+    const body = () => rr(ctx, -46, -25.5, 92, 51, 21);
+    body(); ctx.fillStyle = '#fefbff'; ctx.fill();
+    twoTone(ctx, body, '#ece1ff', 12.5);
+    body(); outline(ctx, OUT, 2.4);
+    // ön cam (arka cam yok: tavan boyunca yele uzanır)
+    ctx.beginPath(); ctx.moveTo(1, -19); ctx.quadraticCurveTo(13, -17, 15.5, 0); ctx.quadraticCurveTo(13, 17, 1, 19); ctx.quadraticCurveTo(4.6, 0, 1, -19);
+    paint(ctx, '#3d3a84', OUT, 1.8);
+    ctx.fillStyle = 'rgba(255,255,255,.55)';
+    ctx.beginPath(); ctx.moveTo(5.5, -15.8); ctx.lineTo(9.8, -13.6); ctx.lineTo(8.4, -8); ctx.lineTo(4.6, -9); ctx.closePath(); ctx.fill();
+    // yanlarda parıltı süsleri
+    [-1, 1].forEach(s => { sparkle(ctx, -36, s * 19.8, 3.4, '#ff8fd0'); sparkle(ctx, 31, s * 19.4, 2.8, '#b394ff'); sparkle(ctx, -12, s * 21, 2.3, '#ffc0e6'); });
+    // farlar ve stop lambaları
+    [-1, 1].forEach(s => {
+      circ(ctx, 40.5, s * 15.8, 4.1); paint(ctx, '#fff6b8', OUT, 1.5);
+      circ(ctx, 39.6, s * 15.8 - 1.2, 1.3); ctx.fillStyle = '#fff'; ctx.fill();
+      rr(ctx, -47.6, s * 16 - 3.2, 3.2, 6.4, 1.5); ctx.fillStyle = '#ff6fa8'; ctx.fill();
+    });
+    unicornMane(ctx, t, sp, OUT);
+    // kulaklar (boynuzun iki yanında)
+    [-1, 1].forEach(s => {
+      ctx.save(); ctx.translate(19.5, s * 9.6); ctx.rotate(s * .5);
+      ell(ctx, -1, 0, 5.4, 3.2); paint(ctx, '#ffffff', OUT, 1.5);
+      ell(ctx, -1.4, 0, 3.1, 1.6); ctx.fillStyle = '#ffb3d9'; ctx.fill();
+      ctx.restore();
+    });
+    unicornHorn(ctx);
+  };
+
+  /* ---------- Prenses Arabası ---------- */
+  function crown(ctx, x, y, s, gold, goldDark) {
+    ctx.save(); ctx.translate(x, y); ctx.rotate(Math.PI / 2); ctx.scale(s, s);
+    ctx.beginPath();
+    ctx.moveTo(-9.2, 6); ctx.lineTo(-10.6, -4.6); ctx.lineTo(-4.8, .4); ctx.lineTo(0, -7.8); ctx.lineTo(4.8, .4); ctx.lineTo(10.6, -4.6); ctx.lineTo(9.2, 6);
+    ctx.closePath(); paint(ctx, gold, goldDark, 1.5);
+    ctx.fillStyle = '#fff1a8'; ctx.beginPath(); ctx.moveTo(-8.4, 2.6); ctx.lineTo(-9.3, -2.2); ctx.lineTo(-5.6, 1.4); ctx.closePath(); ctx.fill();
+    rr(ctx, -9.8, 3, 19.6, 4.4, 1.6); paint(ctx, '#f6b92a', goldDark, 1.3);
+    [[-10.6, -4.6, 2], [0, -7.8, 2.3], [10.6, -4.6, 2]].forEach(b => { circ(ctx, b[0], b[1], b[2]); paint(ctx, '#fff4bf', goldDark, 1.1); });
+    [[-5, '#ff5fa2', 1.35], [0, '#3fe0cf', 1.6], [5, '#ff5fa2', 1.35]].forEach(j => { circ(ctx, j[0], 5.2, j[2]); ctx.fillStyle = j[1]; ctx.fill(); });
+    ctx.restore();
+  }
+  /* taçtaki topların araba üstündeki yeri (parıltılar için) */
+  const CROWN_TIPS = [[35.8, -11.1], [39.2, 0], [35.8, 11.1]];
+
+  function bow(ctx, x, y, t, sp, out) {
+    // kurdele uçları arkadan taşar ve rüzgârda dalgalanır
+    [-1, 1].forEach(s => {
+      const w = Math.sin(t * 7 + s * 1.3) * (.8 + 2.2 * sp);
+      ctx.beginPath(); ctx.moveTo(x - 1, y + s * 2.2); ctx.quadraticCurveTo(x - 11, y + s * 5.5 + w, x - 19.5, y + s * 8.5 + w * 1.6);
+      ctx.lineCap = 'butt'; ctx.strokeStyle = out; ctx.lineWidth = 7.4; ctx.stroke();
+      ctx.strokeStyle = '#ff5fa2'; ctx.lineWidth = 4.6; ctx.stroke();
+    });
+    [-1, 1].forEach(s => {
+      ctx.save(); ctx.translate(x, y + s * 7.4); ctx.rotate(s * .38);
+      ell(ctx, 0, 0, 5.4, 7.2); paint(ctx, '#ff5fa2', out, 1.5);
+      ell(ctx, .5, s * 1.3, 2.3, 3.5); ctx.fillStyle = '#d63a80'; ctx.fill();
+      ell(ctx, -2.2, -s * 2.6, 1.6, 2.2); ctx.fillStyle = 'rgba(255,255,255,.45)'; ctx.fill();
+      ctx.restore();
+    });
+    rr(ctx, x - 3.5, y - 3.5, 7, 7, 2.6); paint(ctx, '#ff7ab8', out, 1.5);
+  }
+
+  Art.PAINT.princess = function (ctx, t, o) {
+    const OUT = '#6a2c98', GOLD = '#ffd04a', GOLDD = '#b8800f', sp = Math.min(1, (o && o.speed) || 0);
+    [[-27, -24, 20, 10.5], [-27, 24, 20, 10.5], [27, -24, 19, 10.5], [27, 24, 19, 10.5]].forEach(w => tire(ctx, w[0], w[1], w[2], w[3], OUT, '#3d2a52'));
+    const body = () => rr(ctx, -47, -25, 94, 50, 19);
+    body(); ctx.fillStyle = '#c77dff'; ctx.fill();
+    twoTone(ctx, body, '#aa5ff0', 12.5, '#ddb3ff', 40);
+    body(); outline(ctx, OUT, 2.4);
+    rr(ctx, -43.4, -21.4, 86.8, 42.8, 15.5); outline(ctx, GOLD, 2.3);
+    [-21, 0, 21].forEach((x, i) => [-1, 1].forEach(s => gem(ctx, x, s * 21.4, 2.5, i === 1 ? '#3fe0cf' : '#ff5fa2')));
+    // üstü açık kabin: kalpli koltuklar
+    rr(ctx, -31, -18, 38.5, 36, 9); paint(ctx, '#56286f', OUT, 1.8);
+    [-1, 1].forEach(s => {
+      rr(ctx, -6.5, s > 0 ? 2.4 : -15.4, 12.5, 13, 4.5); paint(ctx, '#fff0f8', '#e58bbf', 1.2);
+      heart(ctx, -.2, s * 8.9, 3.2, Math.PI / 2); ctx.fillStyle = '#ff5fa2'; ctx.fill();
+    });
+    rr(ctx, -28.5, -15.4, 12.5, 30.8, 4.5); paint(ctx, '#fff0f8', '#e58bbf', 1.2);
+    [-1, 1].forEach(s => { heart(ctx, -22.2, s * 7.4, 3, Math.PI / 2); ctx.fillStyle = '#ff5fa2'; ctx.fill(); });
+    // alçak ön cam
+    ctx.beginPath(); ctx.moveTo(8.8, -17.6); ctx.quadraticCurveTo(15.6, 0, 8.8, 17.6);
+    ctx.lineCap = 'round'; ctx.strokeStyle = OUT; ctx.lineWidth = 5.8; ctx.stroke();
+    ctx.strokeStyle = '#9fe0ff'; ctx.lineWidth = 3.2; ctx.stroke();
+    crown(ctx, 31, 0, 1.05, GOLD, GOLDD);
+    // kalp farlar, stop lambaları
+    [-1, 1].forEach(s => {
+      heart(ctx, 42.4, s * 15.2, 4.5, Math.PI / 2); paint(ctx, '#ffe6f3', OUT, 1.4);
+      heart(ctx, 42.8, s * 15.2, 2.3, Math.PI / 2); ctx.fillStyle = '#ff7ab8'; ctx.fill();
+      rr(ctx, -48.4, s * 16.4 - 3, 3, 6, 1.5); ctx.fillStyle = '#ff4d6d'; ctx.fill();
+    });
+    bow(ctx, -39.5, 0, t, sp, OUT);
+  };
+
+  /* ---------- Canavar Kamyon ---------- */
+  /* tırtıllı dev lastik; dist (araba boyu) arttıkça tırtıllar akar, tekerlek döner gibi görünür */
+  function bigTire(ctx, x, y, w, h, dist, out) {
+    const path = () => rr(ctx, x - w / 2, y - h / 2, w, h, 6.5);
+    path(); ctx.fillStyle = '#262a33'; ctx.fill();
+    ctx.save(); path(); ctx.clip();
+    const step = 6.4, off = ((dist * 12) % step + step) % step;
+    ctx.strokeStyle = '#4c5260'; ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for (let i = -1; i < w / step + 2; i++) {
+      const cx = x - w / 2 + i * step + off;
+      ctx.beginPath(); ctx.moveTo(cx - 2.2, y - h / 2 + 2.4); ctx.lineTo(cx + 1.8, y); ctx.lineTo(cx - 2.2, y + h / 2 - 2.4); ctx.stroke();
+    }
+    ctx.fillStyle = 'rgba(255,255,255,.1)'; ctx.fillRect(x - w / 2, y - h / 2, w, h * .22);
+    ctx.restore();
+    path(); outline(ctx, out, 2);
+  }
+
+  Art.PAINT.monster = function (ctx, t, o) {
+    const OUT = '#2b560c', dist = o && o.dist != null ? o.dist : t * .5;
+    [-28, 28].forEach(x => { rr(ctx, x - 2.6, -27, 5.2, 54, 2); paint(ctx, '#8d96a5', '#4b5563', 1.2); });
+    [[-28, -27.5], [-28, 27.5], [28, -27.5], [28, 27.5]].forEach(w => bigTire(ctx, w[0], w[1], 31, 17, dist, OUT));
+    // sarı amortisör yayları
+    ctx.strokeStyle = '#ffd23f'; ctx.lineWidth = 2.2; ctx.lineCap = 'round';
+    [-28, 28].forEach(x => [-1, 1].forEach(s => {
+      ctx.beginPath();
+      for (let i = 0; i <= 4; i++) ctx.lineTo(x + (i % 2 ? 2.4 : -2.4), s * (18.5 + i * .9));
+      ctx.stroke();
+    }));
+    const body = () => rr(ctx, -42, -19.5, 85, 39, 11);
+    body(); ctx.fillStyle = '#80d91f'; ctx.fill();
+    twoTone(ctx, body, '#62b514', 9.5, '#b8f070', 44);
+    body(); outline(ctx, OUT, 2.4);
+    // arka kasa, egzoz bacaları
+    rr(ctx, -38, -15, 25, 30, 5); paint(ctx, '#2f4d12', OUT, 1.6);
+    ctx.strokeStyle = 'rgba(255,255,255,.13)'; ctx.lineWidth = 1.4;
+    [-7.5, 0, 7.5].forEach(y => { ctx.beginPath(); ctx.moveTo(-35, y); ctx.lineTo(-16.5, y); ctx.stroke(); });
+    [-1, 1].forEach(s => {
+      circ(ctx, -15.8, s * 10.6, 3.5); paint(ctx, '#d3dae3', '#5b6573', 1.3);
+      circ(ctx, -15.8, s * 10.6, 1.7); ctx.fillStyle = '#3a404a'; ctx.fill();
+    });
+    // kabin, ön cam, ışık barı
+    rr(ctx, -12, -15.5, 24.5, 31, 7); paint(ctx, '#92e63a', OUT, 1.8);
+    ctx.beginPath(); ctx.moveTo(7.6, -13.2); ctx.quadraticCurveTo(13.8, -10, 13.8, 0); ctx.quadraticCurveTo(13.8, 10, 7.6, 13.2); ctx.closePath();
+    paint(ctx, '#223047', OUT, 1.4);
+    ctx.fillStyle = 'rgba(255,255,255,.5)'; rr(ctx, 9.6, -9.6, 1.8, 6, .9); ctx.fill();
+    rr(ctx, 0, -13.6, 5.4, 27.2, 2.5); paint(ctx, '#2a2e37', OUT, 1.2);
+    [-9.2, -3.1, 3.1, 9.2].forEach(y => { circ(ctx, 2.7, y, 2.05); ctx.fillStyle = '#ffe45c'; ctx.fill(); });
+    // kaputta canavar yüzü: kocaman gözler ve dişli ağız
+    [-1, 1].forEach(s => {
+      ell(ctx, 24.5, s * 8.6, 6.4, 5.6); paint(ctx, '#ffffff', OUT, 1.6);
+      circ(ctx, 26.6, s * 7.8, 3.1); ctx.fillStyle = '#1d2a12'; ctx.fill();
+      circ(ctx, 27.6, s * 6.8, 1.05); ctx.fillStyle = '#fff'; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(29.8, s * 3.2); ctx.quadraticCurveTo(31.4, s * 9, 29.2, s * 14.6); outline(ctx, OUT, 3.2);
+    });
+    const mouth = () => { ctx.beginPath(); ctx.moveTo(35.6, -14.5); ctx.quadraticCurveTo(38.2, 0, 35.6, 14.5); ctx.lineTo(41.4, 12.5); ctx.quadraticCurveTo(43.4, 0, 41.4, -12.5); ctx.closePath(); };
+    mouth(); ctx.fillStyle = '#7a1b28'; ctx.fill();
+    ctx.save(); mouth(); ctx.clip();
+    ctx.fillStyle = '#ffffff';
+    for (let y = -14; y < 14; y += 4.6) {
+      ctx.beginPath(); ctx.moveTo(35, y); ctx.lineTo(35, y + 4.6); ctx.lineTo(39.4, y + 2.3); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(43, y + 2.3); ctx.lineTo(43, y + 6.9); ctx.lineTo(38.8, y + 4.6); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+    mouth(); outline(ctx, OUT, 1.6);
+    [-1, 1].forEach(s => { circ(ctx, 40.2, s * 16.6, 2.6); paint(ctx, '#fff6b3', OUT, 1.2); });
+  };
+
+  /* ---------- Süper Nitro ---------- */
+  function nitroBody(ctx) {
+    ctx.beginPath();
+    ctx.moveTo(52.5, 0);
+    ctx.quadraticCurveTo(51.5, -7, 44, -11.5);
+    ctx.lineTo(22, -22.5);
+    ctx.quadraticCurveTo(14, -26.2, 4, -26);
+    ctx.lineTo(-36, -25.5);
+    ctx.quadraticCurveTo(-46.5, -25, -47, -17);
+    ctx.lineTo(-47, 17);
+    ctx.quadraticCurveTo(-46.5, 25, -36, 25.5);
+    ctx.lineTo(4, 26);
+    ctx.quadraticCurveTo(14, 26.2, 22, 22.5);
+    ctx.lineTo(44, 11.5);
+    ctx.quadraticCurveTo(51.5, 7, 52.5, 0);
+    ctx.closePath();
+  }
+  /* nitro alevi: (x,y) egzozun ucu, L boy, W yarı en; camgöbeği dış, açık orta, beyaz çekirdek */
+  function flame(ctx, x, y, L, W) {
+    const layer = (l, w, col) => {
+      ctx.beginPath(); ctx.moveTo(x, y - w);
+      ctx.quadraticCurveTo(x - l * .5, y - w * 1.1, x - l, y);
+      ctx.quadraticCurveTo(x - l * .5, y + w * 1.1, x, y + w);
+      ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+    };
+    layer(L, W, 'rgba(28,150,255,.85)');
+    layer(L * .74, W * .74, '#5fe3ff');
+    layer(L * .44, W * .46, '#ffffff');
+  }
+
+  Art.PAINT.nitro = function (ctx) {
+    const OUT = '#7a2c05', BLACK = '#23262f', CYAN = '#2ee6ff';
+    [[29, -24, 18, 10], [29, 24, 18, 10], [-30, -25, 21, 11.5], [-30, 25, 21, 11.5]].forEach(w => tire(ctx, w[0], w[1], w[2], w[3], OUT, '#1f2229'));
+    // arka kanat ayakları ve kanat
+    [-1, 1].forEach(s => { rr(ctx, -46, s * 12 - 2, 6, 4, 1); ctx.fillStyle = BLACK; ctx.fill(); });
+    const bodyPath = () => nitroBody(ctx);
+    bodyPath(); ctx.fillStyle = '#ff7b1c'; ctx.fill();
+    twoTone(ctx, bodyPath, '#e35f0e', 12, '#ffac62', 46);
+    bodyPath(); outline(ctx, OUT, 2.4);
+    // yan hava girişleri
+    [-1, 1].forEach(s => { ctx.beginPath(); ctx.moveTo(-5, s * 22.4); ctx.lineTo(-28, s * 24.2); ctx.lineTo(-28, s * 17.6); ctx.closePath(); paint(ctx, BLACK, OUT, 1.2); });
+    // arka motor ızgarası
+    ctx.strokeStyle = BLACK; ctx.lineWidth = 2; ctx.lineCap = 'round';
+    [-31, -35, -39].forEach(x => { ctx.beginPath(); ctx.moveTo(x, -9); ctx.lineTo(x, 9); ctx.stroke(); });
+    // kokpit camı
+    ctx.beginPath(); ctx.moveTo(20, 0);
+    ctx.bezierCurveTo(16, -12, 2, -15.4, -12, -14.2); ctx.quadraticCurveTo(-26, -12, -27.5, 0);
+    ctx.quadraticCurveTo(-26, 12, -12, 14.2); ctx.bezierCurveTo(2, 15.4, 16, 12, 20, 0);
+    ctx.closePath(); paint(ctx, '#223058', OUT, 1.8);
+    ctx.fillStyle = '#2f4378'; ell(ctx, -4, 3.5, 17, 7.5); ctx.fill();
+    ctx.strokeStyle = CYAN; ctx.lineWidth = 1.8;
+    ctx.beginPath(); ctx.moveTo(13, -6.5); ctx.quadraticCurveTo(4, -11.5, -8, -11.2); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,.45)'; ell(ctx, 8, -6.5, 4.5, 1.8, -.25); ctx.fill();
+    ell(ctx, -16, -8.4, 3.2, 1.3, .1); ctx.fill();
+    // kaputta şimşek
+    ctx.save(); ctx.translate(34, 0); ctx.rotate(Math.PI / 2); ctx.scale(1.15, 1.15);
+    ctx.beginPath(); ctx.moveTo(2.6, -12); ctx.lineTo(-5, 1.4); ctx.lineTo(.2, 1.4); ctx.lineTo(-3, 12); ctx.lineTo(5.6, -2.2); ctx.lineTo(.4, -2.2); ctx.lineTo(4, -12); ctx.closePath();
+    paint(ctx, CYAN, '#0b5f7a', 1.2);
+    ctx.restore();
+    // farlar: ince ok gibi LED'ler
+    [-1, 1].forEach(s => {
+      ctx.beginPath(); ctx.moveTo(47, s * 7.5); ctx.lineTo(38.5, s * 13.2); ctx.lineTo(37, s * 11.6); ctx.lineTo(45.2, s * 6.2); ctx.closePath();
+      paint(ctx, '#e8fdff', OUT, 1);
+    });
+    // arka kanat ve egzozlar
+    rr(ctx, -51.5, -29, 8.2, 58, 3); paint(ctx, BLACK, OUT, 1.6);
+    ctx.fillStyle = CYAN; rr(ctx, -50.3, -26, 1.8, 52, .9); ctx.fill();
+    [-1, 1].forEach(s => { circ(ctx, -48.6, s * 6, 3); paint(ctx, '#6b7280', OUT, 1); circ(ctx, -48.6, s * 6, 1.6); ctx.fillStyle = '#15171c'; ctx.fill(); });
+  };
+
+  /* ---------- arabaya bağlı efektler ve yoldaki izler ----------
+     shadow: gölge yolu (kod çiziminde), under: gövdeden önce (alev, alt ışık), wobble: gövdeyi sallar,
+     over: gövdeden sonra (yalnızca kod çiziminde; resimde yerler farklı olabilir), emit: yolda parçacık,
+     ribbon: gökkuşağı izi, noSmoke: egzoz dumanı yok. o.speed 0..1.5, o.dist gidilen yol (araba boyu). */
+  Art.CAR_FX.unicorn = {
+    ribbon: true, noSmoke: true,
+    over(ctx, t) {
+      const ph = (t * .85) % 1;
+      if (ph < .32) sparkle(ctx, UNICORN_TIP, 0, Math.sin(ph / .32 * Math.PI) * 6.5, '#ffffff');
+    },
+    emit(F, p) {
+      let n = F.rate('star', 8 + 4 * Math.min(1, p.v / 2), p.dt);
+      while (n-- > 0) {
+        const side = (Math.random() - .5) * p.len * .55;
+        F.add({ k: 'star', x: p.rx - p.sa * side, y: p.ry + p.ca * side, vx: (Math.random() - .5) * p.len * .6, vy: (Math.random() - .5) * p.len * .6 - p.len * .15, r: p.len * (.045 + Math.random() * .05), life: .6 + Math.random() * .45, color: pick(['#ffffff', '#fff3a6', '#ffc6ec', '#d9c9ff']), drag: .93 });
+      }
+    },
+  };
+  Art.CAR_FX.princess = {
+    noSmoke: true,
+    over(ctx, t) {
+      CROWN_TIPS.forEach((c, i) => {
+        const ph = (t * .8 + i * .33) % 1;
+        if (ph < .3) sparkle(ctx, c[0], c[1], Math.sin(ph / .3 * Math.PI) * 5, '#ffffff');
+      });
+    },
+    emit(F, p) {
+      let n = F.rate('heart', 8.5, p.dt);
+      while (n-- > 0) {
+        const side = (Math.random() < .5 ? -1 : 1) * p.len * (.1 + Math.random() * .2);
+        F.add({ k: 'heart', x: p.rx - p.sa * side, y: p.ry + p.ca * side, vx: -p.ca * p.len * .25 + (Math.random() - .5) * p.len * .3, vy: -p.sa * p.len * .25 - p.len * .2, r: p.len * (.07 + Math.random() * .05), grow: p.len * .03, life: .95 + Math.random() * .4, color: pick(['#ff5fa2', '#ff8fc8', '#e45bff', '#ff3d7f']), rot: (Math.random() - .5) * .7, vr: (Math.random() - .5) * 1.6, drag: .95, lift: -p.len * .3 });
+      }
+      n = F.rate('glint', 5, p.dt);
+      while (n-- > 0) {
+        const side = (Math.random() - .5) * p.len * .7;
+        F.add({ k: 'star', x: p.x - p.sa * side, y: p.y + p.ca * side, vx: 0, vy: -p.len * .1, r: p.len * (.04 + Math.random() * .04), life: .5 + Math.random() * .3, color: pick(['#ffffff', '#ffe27a']), drag: .95 });
+      }
+    },
+  };
+  const DUST = { snow: ['#ffffff', '#eef5fb', '#dce8f3'], city: ['#d9dde3', '#c8ced6', '#e8ebef'], other: ['#dcc195', '#cfae7c', '#e9d8b6'] };
+  Art.CAR_FX.monster = {
+    shadow(ctx) { rr(ctx, -46, -36, 92, 72, 18); },
+    wobble(ctx, t, o) {
+      const a = .3 + .7 * Math.min(1, o.speed || 0);
+      ctx.rotate(Math.sin(t * 7.3) * .035 * a);
+      const s = 1 + Math.abs(Math.sin(t * 8.6)) * .04 * a;
+      ctx.scale(s, s);
+    },
+    emit(F, p) {
+      let n = F.rate('dust', 15, p.dt);
+      const cols = DUST[F.theme] || DUST.other;
+      while (n-- > 0) {
+        const side = Math.random() < .5 ? -1 : 1, off = p.len * .3;
+        F.add({ k: 'dust', under: true, x: p.x - p.ca * off - p.sa * side * off, y: p.y - p.sa * off + p.ca * side * off, vx: -p.ca * p.len * .6 - p.sa * side * p.len * .35 + (Math.random() - .5) * p.len * .3, vy: -p.sa * p.len * .6 + p.ca * side * p.len * .35 + (Math.random() - .5) * p.len * .3, r: p.len * (.06 + Math.random() * .05), grow: p.len * .3, life: .5 + Math.random() * .3, color: pick(cols), drag: .9, alpha: .6 });
+      }
+    },
+  };
+  Art.CAR_FX.nitro = {
+    shadow(ctx) { rr(ctx, -52, -29, 104, 58, 14); },
+    under(ctx, t, o) {
+      const v = Math.min(1.3, o.speed || 0);
+      const g = ctx.createRadialGradient(0, 0, 8, 0, 0, 64);
+      g.addColorStop(0, 'rgba(46,230,255,' + (.34 + .1 * Math.sin(t * 4)).toFixed(3) + ')');
+      g.addColorStop(1, 'rgba(46,230,255,0)');
+      ctx.fillStyle = g; ell(ctx, 0, 0, 64, 42); ctx.fill();
+      [-6, 6].forEach((y, i) => {
+        const fl = .84 + .12 * Math.sin(t * 43 + i * 2.1) + .07 * Math.sin(t * 71 + i);
+        flame(ctx, -50, y, (8 + 36 * v) * fl, 4.4 + 1.4 * v);
+      });
+    },
+    emit(F, p) {
+      if (p.v < .5) return;
+      let n = F.rate('spark', 12 * Math.min(1.5, p.v / 2), p.dt);
+      while (n-- > 0) {
+        const side = Math.random() < .5 ? -1 : 1;
+        F.add({ k: 'spark', x: p.x - p.ca * p.len * .55 - p.sa * side * p.len * .06, y: p.y - p.sa * p.len * .55 + p.ca * side * p.len * .06, vx: -p.ca * p.len * (1.1 + Math.random()) + (Math.random() - .5) * p.len * .5, vy: -p.sa * p.len * (1.1 + Math.random()) + (Math.random() - .5) * p.len * .5, r: p.len * (.016 + Math.random() * .018), life: .25 + Math.random() * .2, color: pick(['#8ff4ff', '#ffffff', '#35c8ff']), drag: .9 });
+      }
+    },
+  };
+
+  /* ---------- yoldaki izler ve parçacıklar ----------
+     Koordinatlar çizim (tasarım) pikselidir. emit her karede arabanın ortasıyla çağrılır; araba giderken
+     gökkuşağı şeridi uzar, kalpler/toz/kıvılcım saçılır. drift verilirse araba yerinde durur, dünya geriye kayar (vitrin). */
+  const TRAIL_LIFE = 1.1;
+  class CarFx {
+    constructor() { this.time = 0; this.theme = ''; this.drift = null; this.clear(); }
+    clear() { this.trail = []; this.parts = []; this.head = null; this.prev = null; this.acc = {}; this.strand = 0; }
+
+    emit(id, x, y, ang, len, dt) {
+      const fx = Art.CAR_FX[id];
+      if (!fx || !(dt > 0)) { this.prev = null; this.head = null; return; }
+      const ca = Math.cos(ang), sa = Math.sin(ang);
+      const rx = x - ca * len * .42, ry = y - sa * len * .42;  // arkanın ortası
+      const moved = this.prev ? Math.hypot(rx - this.prev.x, ry - this.prev.y) : 0;
+      if (this.prev && !this.drift && moved > len * 1.2) this.strand++;  // ışınlandı: iz kopsun
+      this.prev = { x: rx, y: ry };
+      const v = this.drift ? Math.hypot(this.drift.x, this.drift.y) / len : moved / dt / len;  // saniyede araba boyu
+      if (fx.ribbon) {
+        this.head = { x: rx, y: ry, s: this.strand, w: len * .4 };
+        const last = this.trail[this.trail.length - 1];
+        if (v > .2 && (!last || last.s !== this.strand || Math.hypot(rx - last.x, ry - last.y) > len * .06)) {
+          this.trail.push({ x: rx, y: ry, t: this.time, s: this.strand, w: len * .4 });
+          if (this.trail.length > 90) this.trail.shift();
+        }
+      }
+      if (fx.emit && v > .3) fx.emit(this, { x, y, rx, ry, ca, sa, len, v, dt });
+    }
+    /* saniyede perSec parçacık: bu karede kaç tane */
+    rate(key, perSec, dt) {
+      const a = (this.acc[key] || 0) + perSec * dt, n = Math.floor(a);
+      this.acc[key] = a - n;
+      return n;
+    }
+    add(q) {
+      if (this.parts.length >= 180) return;
+      this.parts.push(Object.assign({ vx: 0, vy: 0, grow: 0, rot: 0, vr: 0, drag: .95, lift: 0, alpha: 1 }, q, { max: q.life }));
+    }
+    update(dt) {
+      this.time += dt;
+      const d = this.drift;
+      if (d) {
+        this.trail.forEach(q => { q.x += d.x * dt; q.y += d.y * dt; });
+      }
+      while (this.trail.length && this.time - this.trail[0].t > TRAIL_LIFE) this.trail.shift();
+      const ps = this.parts;
+      for (let i = ps.length - 1; i >= 0; i--) {
+        const q = ps[i];
+        q.life -= dt;
+        if (q.life <= 0) { ps.splice(i, 1); continue; }
+        const f = Math.pow(q.drag, dt * 60);
+        q.vx *= f; q.vy = q.vy * f + q.lift * dt;
+        q.x += (q.vx + (d ? d.x : 0)) * dt; q.y += (q.vy + (d ? d.y : 0)) * dt;
+        q.r += q.grow * dt; q.rot += q.vr * dt;
+      }
+    }
+    drawUnder(ctx) {
+      this.drawRibbon(ctx);
+      this.parts.forEach(q => { if (q.under) this.drawPart(ctx, q); });
+      ctx.globalAlpha = 1;
+    }
+    drawOver(ctx) {
+      this.parts.forEach(q => { if (!q.under) this.drawPart(ctx, q); });
+      ctx.globalAlpha = 1;
+    }
+    drawPart(ctx, q) {
+      const a = q.life / q.max;
+      ctx.globalAlpha = q.alpha * (q.k === 'dust' ? a * a : Math.min(1, a * 2.2));
+      ctx.fillStyle = q.color;
+      if (q.k === 'heart') {
+        heart(ctx, q.x, q.y, q.r, q.rot);
+        ctx.fill();
+        ctx.lineWidth = Math.max(1, q.r * .22); ctx.strokeStyle = 'rgba(255,255,255,.9)'; ctx.stroke();
+      } else if (q.k === 'star') {
+        Art.starPath(ctx, q.x, q.y, q.r * (.65 + .35 * Math.sin(q.life * 18)), q.r * .3, 4); ctx.fill();
+      } else if (q.k === 'conf') {
+        ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(q.rot); ctx.scale(1, Math.cos(q.life * 9));
+        ctx.fillRect(-q.r, -q.r * .55, q.r * 2, q.r * 1.1); ctx.restore();
+      } else {
+        circ(ctx, q.x, q.y, q.r); ctx.fill();
+      }
+    }
+    /* gökkuşağı şeridi: yeni ucu tam genişlikte, eskidikçe incelir */
+    drawRibbon(ctx) {
+      const pts = this.trail.slice();
+      if (this.head && pts.length) pts.push({ x: this.head.x, y: this.head.y, t: this.time, s: this.head.s, w: this.head.w });
+      for (let i = 0; i < pts.length;) {
+        let j = i;
+        while (j + 1 < pts.length && pts[j + 1].s === pts[i].s) j++;
+        if (j > i) this.band(ctx, pts.slice(i, j + 1));
+        i = j + 1;
+      }
+    }
+    band(ctx, pts) {
+      const n = pts.length, nx = [], ny = [], hw = [];
+      for (let i = 0; i < n; i++) {
+        const a = pts[Math.max(0, i - 1)], b = pts[Math.min(n - 1, i + 1)];
+        const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1;
+        nx.push(-dy / d); ny.push(dx / d);
+        hw.push(pts[i].w / 2 * Math.pow(Math.max(0, 1 - (this.time - pts[i].t) / TRAIL_LIFE), .6));
+      }
+      RAINBOW.forEach((col, b) => {
+        const o0 = -1 + b / 3;
+        ctx.beginPath();
+        for (let i = 0; i < n; i++) ctx.lineTo(pts[i].x + nx[i] * hw[i] * o0, pts[i].y + ny[i] * hw[i] * o0);
+        for (let i = n - 1; i >= 0; i--) ctx.lineTo(pts[i].x + nx[i] * hw[i], pts[i].y + ny[i] * hw[i]);
+        ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+      });
+    }
+  }
+  CC.CarFx = CarFx;
+
+  /* tuvali CSS boyutuna ve cihaz piksel oranına göre ayarlar; çizim birimi CSS pikselidir */
+  function fitCanvas(cv) {
+    const W = cv.clientWidth, H = cv.clientHeight, k = (CC.scale || 1) * (root.devicePixelRatio || 1);
+    if (!W || !H) return null;
+    const pw = Math.round(W * k), ph = Math.round(H * k);
+    if (cv.width !== pw || cv.height !== ph) { cv.width = pw; cv.height = ph; }
+    const c = cv.getContext('2d');
+    c.setTransform(1, 0, 0, 1, 0, 0);
+    c.clearRect(0, 0, pw, ph);
+    c.setTransform(k, 0, 0, k, 0, 0);
+    Art.pxScale = k;
+    return { c, W, H };
+  }
+
+  /* Vitrin: araba yerinde süzülür, dünya geriye kayar; iz ve parçacıklar arkadan akar.
+     o: angle (yön), cx/cy (0..1 konum), size (boy: tuvalin kısa kenarına oranı), speed (saniyede araba boyu) */
+  class Showroom {
+    constructor(cv, id, o) { this.cv = cv; this.id = id; this.o = o; this.fx = new CarFx(); this.t = Math.random() * 10; }
+    frame(dt) {
+      const f = fitCanvas(this.cv);
+      if (!f) return;
+      const { c, W, H } = f, o = this.o;
+      this.t += dt;
+      const len = Math.min(W, H) * o.size, sway = Math.sin(this.t * 1.7);
+      const ang = o.angle + sway * .09;
+      const x = W * o.cx - Math.sin(o.angle) * sway * len * .07, y = H * o.cy + Math.cos(o.angle) * sway * len * .07;
+      const g = c.createRadialGradient(x, y, len * .1, x, y, len * .95);
+      g.addColorStop(0, 'rgba(255,255,255,.85)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+      c.fillStyle = g; c.fillRect(0, 0, W, H);
+      const sp = o.speed * len;
+      this.fx.drift = { x: -Math.cos(o.angle) * sp, y: -Math.sin(o.angle) * sp };
+      this.fx.emit(this.id, x, y, ang, len, dt);
+      this.fx.update(dt);
+      this.fx.drawUnder(c);
+      Art.drawCar(c, this.id, x, y, len, ang, this.t, { speed: 1, dist: this.t * o.speed });
+      this.fx.drawOver(c);
+    }
+  }
+  CC.Showroom = Showroom;
+
+  /* Ödül kutlaması: ekranın üstünden dökülen konfeti */
+  class Confetti {
+    constructor(cv) { this.cv = cv; this.fx = new CarFx(); this.started = false; }
+    frame(dt) {
+      const f = fitCanvas(this.cv);
+      if (!f) return;
+      const { c, W, H } = f;
+      if (!this.started) {
+        this.started = true;
+        const cols = ['#ef4d5a', '#ffc93c', '#3cc45a', '#2e9be6', '#9b6cf2', '#ff9a2e', '#ff6fb8'];
+        for (let i = 0; i < 150; i++) {
+          this.fx.add({ k: 'conf', x: Math.random() * W, y: -20 - Math.random() * H * .7, vx: (Math.random() - .5) * 80, vy: 90 + Math.random() * 140, r: 6 + Math.random() * 6, rot: Math.random() * 6.3, vr: (Math.random() - .5) * 10, life: 3.2 + Math.random() * 1.3, color: cols[i % cols.length], drag: .995, lift: 60 });
+        }
+      }
+      this.fx.update(dt);
+      this.fx.drawOver(c);
+    }
+  }
+  CC.Confetti = Confetti;
 })(window);
 
 </script>
@@ -3095,6 +3830,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       this.cb = {};
       this.active = false;
       this.carSpeed = 0;
+      this.odo = 0;                 // gidilen yol (araba boyu): canavar kamyonun tırtılları için
+      this.fx = new CC.CarFx();     // özel arabaların izi ve parçacıkları
       this._frame = this._frame.bind(this);
       requestAnimationFrame(this._frame);
     }
@@ -3104,6 +3841,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       this.hint = null;
       this.T = THEMES[theme] || THEMES.meadow;
       this.theme = theme;
+      this.fx.theme = theme;
       this.carId = carId;
       this.seed = CC.hash(L.id + ':' + theme);
       this.buildRivals();
@@ -3199,6 +3937,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       this.tick = 0;
       this.carSpeed = 0;
       this.lastPos = null;
+      this.odo = 0;
+      this.fx.clear();
       CC.Audio.engineOff();
     }
 
@@ -3459,8 +4199,12 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
         const inst = Math.hypot(car.x - this.lastPos.x, car.y - this.lastPos.y) / dt * (MOVE_MS / 1000);
         this.carSpeed += (Math.min(1.6, inst) - this.carSpeed) * Math.min(1, dt * 10);
         CC.Audio.engineSet(this.carSpeed);
+        this.odo += this.carSpeed / (MOVE_MS / 1000) / .8 * dt;
       }
       this.lastPos = { x: car.x, y: car.y };
+      // özel araba: yolda gökkuşağı, kalp, toz ya da kıvılcım bırakır
+      this.fx.emit(this.carId, this.cx(car.x), this.cy(car.y) - car.hop * this.ts, car.a + car.spin, this.ts * .8, dt);
+      this.fx.update(dt);
       for (let i = this.gateShake.length - 1; i >= 0; i--) this.gateShake[i] = Math.max(0, this.gateShake[i] - dt * 1.6);
       for (let i = this.lightFlash.length - 1; i >= 0; i--) this.lightFlash[i] = Math.max(0, this.lightFlash[i] - dt);
       const ps = this.particles;
@@ -3487,6 +4231,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       Art.pxScale = this.k;
 
       this.drawSkids(c);
+      this.fx.drawUnder(c);
       if (this.hint) this.drawHint(c);
 
       L.gates.forEach((g, i) => {
@@ -3500,6 +4245,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
 
       this.rivals.forEach((r, k) => this.drawCarAt(c, this.rivalDefs[k].car, r));
       this.drawCarAt(c, this.carId, this.car);
+      this.fx.drawOver(c);
       if (this.hint) this.drawHintLabels(c);  // numaralar altın, anahtar ve bariyerin üstünde görünsün
 
       const car = this.car;
@@ -3542,7 +4288,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
         g.addColorStop(0, 'rgba(255,245,170,' + (.55 * st.lights) + ')'); g.addColorStop(1, 'rgba(255,245,170,0)');
         c.fillStyle = g; Art.circ(c, x + fx * ts * .55, y + fy * ts * .55, ts * .45); c.fill();
       }
-      Art.drawCar(c, id, x, y, ts * .8, st.a + st.spin, this.time, { scale: st.scale || 1 });
+      const me = st === this.car;
+      Art.drawCar(c, id, x, y, ts * .8, st.a + st.spin, this.time, { scale: st.scale || 1, speed: me ? this.carSpeed : 0, dist: me ? this.odo : 0 });
     }
 
     drawSkids(c) {
@@ -3671,6 +4418,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
 
     /* ---------- parçacıklar ve izler ---------- */
     exhaust(st) {
+      if (st === this.car && (Art.CAR_FX[this.carId] || {}).noSmoke) return;  // sihirli arabalar duman çıkarmaz
       const ts = this.ts, a = st.a + st.spin;
       const x = this.cx(st.x) - Math.cos(a) * ts * .42, y = this.cy(st.y) - Math.sin(a) * ts * .42;
       this.particles.push({ kind: 'smoke', x, y, vx: -Math.cos(a) * 18 + (Math.random() - .5) * 10, vy: -Math.sin(a) * 18 - 6, r: ts * .05, grow: ts * .16, life: .55, max: .55, color: this.theme === 'snow' ? '#b9c6d4' : '#ffffff' });
@@ -4667,6 +5415,8 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       this.cv = $('#title-canvas');
       this.ctx = this.cv.getContext('2d');
       this.st = document.createElement('canvas');
+      this.fx = new CC.CarFx();  // özel arabanın izi (gökkuşağı, kalpler...)
+      this.fx.theme = 'meadow';
       requestAnimationFrame(t => this.frame(t));
     },
     resize(force) {
@@ -4758,16 +5508,22 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       c.drawImage(this.st, 0, 0);
       c.setTransform(this.k, 0, 0, this.k, 0, 0);
       Art.pxScale = this.k;
+      const id = CC.Save.data.car, fx = Art.CAR_FX[id] || {};
+      if (id !== this.fxId) { this.fxId = id; this.fx.clear(); }
       this.puffT += dt;
       if (this.puffT > .08) {
         this.puffT = 0;
-        this.puffs.push({ x: p.x - Math.cos(p.ang) * 30, y: p.y - Math.sin(p.ang) * 30, r: 4, life: .6 });
+        if (!fx.noSmoke) this.puffs.push({ x: p.x - Math.cos(p.ang) * 30, y: p.y - Math.sin(p.ang) * 30, r: 4, life: .6 });
       }
       c.fillStyle = '#fff';
       this.puffs = this.puffs.filter(q => (q.life -= dt) > 0);
       this.puffs.forEach(q => { q.r += dt * 16; c.globalAlpha = q.life * .8; Art.circ(c, q.x, q.y, q.r); c.fill(); });
       c.globalAlpha = 1;
-      Art.drawCar(c, CC.Save.data.car, p.x, p.y, 62, p.ang, now / 1000);
+      this.fx.emit(id, p.x, p.y, p.ang, 62, dt);
+      this.fx.update(dt);
+      this.fx.drawUnder(c);
+      Art.drawCar(c, id, p.x, p.y, 62, p.ang, now / 1000, { speed: 1, dist: this.s / 62 });
+      this.fx.drawOver(c);
     },
   };
 
@@ -4796,6 +5552,14 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       on('#ov-confirm .confirm-no', () => { CC.Audio.play('tap'); UI.closeConfirm(); });
       on('#ov-confirm .confirm-yes', () => { const f = UI.confirmFn; UI.closeConfirm(); if (f) f(); });
       $('#ov-settings').addEventListener('click', e => { if (e.target.id === 'ov-settings') UI.closeSettings(); });
+      CC.$$('#scr-garage .gtab').forEach(b => b.addEventListener('click', () => {
+        if (UI.garageTab === b.dataset.tab) return;
+        CC.Audio.play('tap');
+        UI.garageTab = b.dataset.tab;
+        UI.renderGarage();
+      }));
+      on('#ov-reward .reward-select', () => UI.closeReward(true));
+      on('#ov-reward .reward-close', () => UI.closeReward(false));
       CC.$$('#ov-pin [data-k]').forEach(b => b.addEventListener('click', () => UI.pinKey(b.dataset.k)));
       on('#ov-pin .pin-cancel', () => { CC.Audio.play('tap'); UI.closePin(); });
       $('#ov-pin').addEventListener('click', e => { if (e.target.id === 'ov-pin') UI.closePin(); });
@@ -4962,11 +5726,21 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       }
     },
 
-    /* ---------- garaj ---------- */
+    /* ---------- garaj: "Arabalar" (yıldızla açılır) ve "Özel Arabalar" (öğretmen açar) sekmeleri ---------- */
+    garageTab: 'cars',
     showGarage() { UI.show('garage', () => UI.renderGarage()); },
     renderGarage() {
-      const total = CC.Save.totalStars();
+      const total = CC.Save.totalStars(), special = UI.garageTab === 'special';
       CC.$$('.stars-total').forEach(e => { e.textContent = total; });
+      $('#scr-garage').classList.toggle('special-on', special);
+      CC.$$('#scr-garage .gtab').forEach(b => b.classList.toggle('sel', b.dataset.tab === UI.garageTab));
+      const open = Art.SPECIAL_CARS.filter(c => CC.Save.data.special[c.id]).length;
+      $('#scr-garage .gtab-count').textContent = open + '/' + Art.SPECIAL_CARS.length;
+      $('#car-grid').classList.toggle('hidden', special);
+      $('#special-page').classList.toggle('hidden', !special);
+      if (special) UI.renderSpecial(); else UI.renderCars(total);
+    },
+    renderCars(total) {
       const grid = $('#car-grid');
       grid.innerHTML = '';
       Art.CARS.forEach(car => {
@@ -4981,7 +5755,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
           card.appendChild(CC.el('div', 'need', CC.escape(CC.t('garage.selected'))));
         } else if (unlocked) {
           const b = CC.el('button', 'btn btn-go', CC.escape(CC.t('garage.select')));
-          b.addEventListener('click', () => { CC.Save.data.car = car.id; CC.Save.save(); CC.Audio.play('horn'); UI.renderGarage(); });
+          b.addEventListener('click', () => UI.selectCar(car.id));
           card.appendChild(b);
         } else {
           card.appendChild(CC.el('div', 'need', '<span class="ico star">' + Art.icon('star') + '</span>' + car.need));
@@ -4990,6 +5764,107 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
         grid.appendChild(card);
         requestAnimationFrame(() => UI.drawCarPreview(cv, car.id));
       });
+    },
+    selectCar(id) {
+      CC.Save.data.car = id;
+      CC.Save.save();
+      CC.Audio.play('horn');
+      UI.renderGarage();
+    },
+
+    /* Özel arabalar koleksiyonu: kilitli kartlar da renkli görünür (çocuk ne kazanacağını görsün).
+       Kilitli karta dokununca öğretmen şifresi sorulur; açık kartın köşesindeki kilit yeniden kilitler. */
+    renderSpecial() {
+      const grid = $('#special-grid'), d = CC.Save.data;
+      grid.innerHTML = '';
+      UI.showroom = [];
+      Art.SPECIAL_CARS.forEach(car => {
+        const open = !!d.special[car.id], sel = d.car === car.id;
+        const card = CC.el('div', 'scard car-' + car.id + (open ? '' : ' locked') + (sel ? ' sel' : ''));
+        const inner = CC.el('div', 'scard-in');
+        const cv = CC.el('canvas', 'scard-cv');
+        inner.appendChild(cv);
+        inner.appendChild(CC.el('div', 'scard-name', CC.escape(CC.t('cars.' + car.id))));
+        inner.appendChild(CC.el('div', 'scard-fx', CC.escape(CC.t('special.fx.' + car.id))));
+        if (!open) {
+          inner.appendChild(CC.el('div', 'scard-badge', '<span class="ico">' + Art.icon('lock') + '</span>'));
+          inner.appendChild(CC.el('div', 'scard-lock', '<span class="ico">' + Art.icon('lock') + '</span>' + CC.escape(CC.t('special.locked'))));
+          card.addEventListener('click', () => {
+            CC.Audio.play('tap');
+            UI.askPin(() => UI.unlockSpecial(car.id), CC.t('special.pinUnlock'));
+          });
+        } else if (sel) {
+          card.appendChild(CC.el('div', 'selmark', '<span class="ico">' + Art.icon('check') + '</span>'));
+          inner.appendChild(CC.el('div', 'need', CC.escape(CC.t('garage.selected'))));
+        } else {
+          const b = CC.el('button', 'btn btn-go', CC.escape(CC.t('garage.select')));
+          b.addEventListener('click', () => UI.selectCar(car.id));
+          inner.appendChild(b);
+        }
+        if (open) {
+          const lock = CC.el('button', 'scard-relock', '<span class="ico">' + Art.icon('unlock') + '</span>');
+          lock.addEventListener('click', () => { CC.Audio.play('tap'); UI.relockSpecial(car.id); });
+          card.appendChild(lock);
+        }
+        card.appendChild(inner);
+        grid.appendChild(card);
+        UI.showroom.push(new CC.Showroom(cv, car.id, { angle: -Math.PI / 2, cx: .5, cy: .43, size: .94, speed: 2.1 }));
+      });
+      UI.animate();
+    },
+    unlockSpecial(id) {
+      CC.Save.data.special[id] = true;
+      CC.Save.save();
+      UI.renderGarage();
+      UI.showReward(id);
+    },
+    relockSpecial(id) {
+      UI.askPin(() => {
+        delete CC.Save.data.special[id];
+        if (CC.Save.data.car === id) CC.Save.data.car = 'racer';
+        CC.Save.save();
+        CC.Audio.play('remove');
+        UI.renderGarage();
+        UI.toast(CC.t('special.relocked', { car: CC.t('cars.' + id) }));
+      }, CC.t('special.pinRelock'));
+    },
+
+    /* Ödül kutlaması: araba açılınca konfeti, borazan ve "Hemen Seç!" */
+    showReward(id) {
+      const ov = $('#ov-reward');
+      ov.dataset.car = id;
+      ov.querySelector('.reward-text').textContent = CC.t('reward.text', { car: CC.t('cars.' + id) });
+      ov.classList.remove('hidden');
+      UI.reward = [
+        new CC.Showroom(ov.querySelector('.reward-car'), id, { angle: 0, cx: .6, cy: .5, size: .92, speed: 2.4 }),
+        new CC.Confetti(ov.querySelector('.reward-confetti')),
+      ];
+      CC.Audio.play('reward');
+      UI.animate();
+    },
+    closeReward(select) {
+      const ov = $('#ov-reward'), id = ov.dataset.car;
+      if (ov.classList.contains('hidden')) return;
+      ov.classList.add('hidden');
+      UI.reward = null;
+      if (select && id) UI.selectCar(id);
+      else CC.Audio.play('tap');
+    },
+
+    /* vitrin ve ödül kartındaki arabalar yalnızca görünürken çizilir */
+    animate() {
+      if (UI._anim) return;
+      let last = 0;
+      const loop = now => {
+        const shelf = UI.current === 'garage' && UI.garageTab === 'special' ? UI.showroom || [] : [];
+        const list = shelf.concat(UI.reward || []);
+        if (!list.length) { UI._anim = 0; return; }
+        UI._anim = requestAnimationFrame(loop);
+        const dt = last ? Math.min(.1, (now - last) / 1000) : 0;
+        last = now;
+        list.forEach(s => s.frame(dt));
+      };
+      UI._anim = requestAnimationFrame(loop);
     },
     drawCarPreview(cv, id) {
       const W = cv.clientWidth, H = cv.clientHeight, k = (CC.scale || 1) * (root.devicePixelRatio || 1);
@@ -5037,13 +5912,24 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       UI.syncSettings();
     },
 
-    /* ---------- öğretmen şifresi ---------- */
-    askPin(onOk) {
+    /* ---------- öğretmen şifresi ----------
+       Rakam tuşları her açılışta karışık dizilir: izleyen öğrenci şifreyi parmağın yerinden çıkaramaz. */
+    askPin(onOk, msg) {
       UI.pinFn = onOk;
+      UI.pinMsg = msg || '';
       UI.pinVal = '';
+      UI.shufflePad();
       UI.pinWrong(false);
       UI.renderPin();
       $('#ov-pin').classList.remove('hidden');
+    },
+    shufflePad() {
+      const digits = '0123456789'.split('');
+      for (let i = digits.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = digits[i]; digits[i] = digits[j]; digits[j] = tmp;
+      }
+      CC.$$('#ov-pin [data-k]').filter(b => b.dataset.k !== 'del').forEach((b, i) => { b.dataset.k = digits[i]; b.textContent = digits[i]; });
     },
     closePin() {
       $('#ov-pin').classList.add('hidden');
@@ -5057,7 +5943,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
       dots.classList.remove('wrong');
       if (wrong) { void dots.offsetWidth; dots.classList.add('wrong'); }
       text.classList.toggle('wrong', wrong);
-      text.textContent = CC.t(wrong ? 'pin.wrong' : 'pin.text');
+      text.textContent = wrong ? CC.t('pin.wrong') : UI.pinMsg || CC.t('pin.text');
     },
     pinKey(k) {
       if (k === 'del') { UI.pinVal = UI.pinVal.slice(0, -1); CC.Audio.play('tap'); UI.renderPin(); return; }
@@ -5106,6 +5992,7 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
 
     back() {
       if (!$('#ov-pin').classList.contains('hidden')) { UI.closePin(); return true; }
+      if (!$('#ov-reward').classList.contains('hidden')) { UI.closeReward(false); return true; }
       if (!$('#ov-confirm').classList.contains('hidden')) { UI.closeConfirm(); return true; }
       if (!$('#ov-settings').classList.contains('hidden')) { UI.closeSettings(); return true; }
       if (UI.current === 'game') return CC.Game.onBack();
@@ -5126,7 +6013,10 @@ window.CC_ART.inline = {"bg_title.jpg": "data:image/jpeg;base64,/9j/4AAQSkZJRgAB
     (on ? '#ffc400' : '#e3e8ee') + '" stroke="' + (on ? '#e08e00' : '#c7cfd9') + '" stroke-width="1.5" stroke-linejoin="round"/>' +
     (on ? '<path d="M9.2 8.9l1.6-.25.9-1.9" fill="none" stroke="#fff6c2" stroke-width="1.3" stroke-linecap="round"/>' : '') + '</svg>';
 
-  const CAR_COLORS = { racer: '#ef3b44', blue: '#2e8be6', taxi: '#f2b400', police: '#27324a', fire: '#e5322a', ice: '#ff6fb8' };
+  const CAR_COLORS = {
+    racer: '#ef3b44', blue: '#2e8be6', taxi: '#f2b400', police: '#27324a', fire: '#e5322a', ice: '#ff6fb8',
+    unicorn: '#a77bff', monster: '#5fb512', princess: '#d05bff', nitro: '#ff7b1c',
+  };
 
   const G = CC.Game = {
     idx: 0, def: null, L: null, state: 'idle', sim: null, speed: 1, coins: 0, timers: [],
